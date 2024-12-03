@@ -17,13 +17,9 @@
     <main>
         <div class="create-new-game">
             <h1>Create New Game</h1>
-            <button class="create-game-button" onclick="generateCode()">
+            <button class="create-game-btn" onclick="generateCode()">
                 GET CODE
             </button>
-            <div id="generated-code-container">
-
-            </div>
-
         </div>
     
         <div>
@@ -40,11 +36,25 @@
                 <input type="text" maxlength="1" class="digit-input" id="digit-5" oninput="moveToNext(this, 'digit-6');" required>
                 <input type="text" maxlength="1" class="digit-input" id="digit-6" oninput="moveToNext(this, '');" required>    
             </form>
-            <div id="entered-code-container">
+            <div id="error-container">
 
             </div>
+            <button id="submit-code-btn" onclick="submitCode()">
+                SUBMIT
+            </button>
         </div>
     </main>
+    <section class="room-navigator">
+        <div id="code-display">
+            Your Code is: 
+        </div>
+        <button id="create-room-btn">
+            CREATE ROOM
+        </button>
+        <button id="enter-room-btn">
+            ENTER ROOM
+        </button>
+    </section>
 </body>
 <script src="dashboard.js"></script>
 </html>

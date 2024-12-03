@@ -1,7 +1,6 @@
 body{
     margin: 20px;
     padding: 10px;
-    background-color: var(--purple-2);
     color: var(--blue-0);
 }
 
@@ -9,11 +8,24 @@ main{
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
 }
 
 main div, main form{
     margin: 10px;
     padding: 10px;
+}
+
+.create-game-btn, #submit-code-btn{
+    background-color: var(--orange-0);
+    border: none;
+    padding: 5px;
+    font-size: larger;
+    font-weight: bold;
+}
+
+#submit-code-btn{
+    display: none;
 }
 
 .enter-game, .create-new-game{
@@ -28,11 +40,37 @@ main div, main form{
     flex-direction: row;
 
     input{
-        height: 60px;
+        height: 50px;
         width: 40px;
 
         border: none;
+        border-bottom: 3px solid var(--blue-0);
         margin: 5px;
         padding: 5px;
+        text-align: center;
+        font-size: xx-large;
+        color: var(--orange-0);
+
+
+        background-color: hsla(0, 0%, 0%, 0);
     }
 }
+
+#error-container{
+    color: red;
+}
+
+section.room-navigator{
+    display: none;
+    margin: 20px;
+    padding: 10px;
+    border: 2px solid var(--pink-0);
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+section.room-navigator *{
+    margin: 10px;
+}   

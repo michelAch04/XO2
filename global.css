@@ -1,16 +1,21 @@
 :root{
     /* CSS HSL */
-    --purple-0: hsla(290, 83%, 25%, 1);
-    --purple-1: hsla(260, 78%, 14%, 1);
-    --purple-2: hsla(270, 67%, 7%, 1);
-    --blue-0: hsla(184, 90%, 52%, 1);
-    --pink-0: hsla(326, 90%, 47%, 1);
-    --orange-0: hsla(30, 88%, 57%, 1);
+    --purple-0: #630b75;
+    --purple-1: #1a0840;
+    --purple-2: #12061e;
+    --blue-0: #16e4f3;
+    --pink-0: #e40c86;
+    --orange-0: #f29131;
 }
-
 
 *{
     font-family: "Audiowide", sans-serif;
     font-weight: 400;
     font-style: normal;
+}
+
+body{
+    background: rgb(99,11,117);
+    background: linear-gradient(170deg, rgba(99,11,117,1) 1%, rgba(26, 8, 64, 0.952) 40%, rgba(18, 6, 30, 1) 100%);
+    height: 100vw;
 }
