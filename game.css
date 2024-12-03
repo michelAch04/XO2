@@ -1,0 +1,225 @@
+body {
+    font-family: "Arial", sans-serif;
+    background-color: #1e1e2e;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+    color: #ffffff;
+}
+
+#gameBoard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #282a36;
+    padding: 2rem;
+    border: 5px solid #44475a;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    width: 90%;
+    max-width: 500px; /* Medium-sized board */
+    margin: 2rem 0; /* Margins at the top and bottom */
+}
+
+#board {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Ensures the board is square */
+    gap: 8px; /* Spacing between small grids */
+    background-color: #44475a;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+.grid {
+    display: flex;
+    flex-wrap: wrap;
+    width: 31%; /* Adjusted size for better proportion */
+    aspect-ratio: 1 / 1; /* Keeps small grids square */
+    background-color: #6272a4;
+    border: 3px solid #44475a;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.cell {
+    width: 51.5px;
+    aspect-ratio: 1 / 1; /* Keeps cells square */
+    background-color: #bd93f9;
+    border: 1px solid #6272a4;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem; /* Font size adjusted for medium board */
+    font-weight: bold;
+    color: #282a36;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.cell:hover {
+    background-color: #ff79c6;
+    transform: scale(1.05);
+}
+
+.cell:active {
+    background-color: #ff5555;
+    transform: scale(0.95);
+}
+
+.active {
+    border: 3px solid #50fa7b;
+    box-shadow: 0 0 15px 5px #50fa7b;
+    animation: border 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.complete {
+    pointer-events: none;
+}
+
+.full {
+    pointer-events: none;
+    background-color: #b179ff;
+}
+
+h1 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    text-align: center;
+    color: #f8f8f2;
+}
+
+/* Base styles for the grid overlay */
+.winner-draw {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none; /* Prevent clicks */
+    z-index: 10;
+}
+
+/* Drawing "X" */
+.draw-x {
+    position: relative;
+    width: 100%; /* Extend to cover the entire grid */
+    height: 100%;
+}
+
+.draw-x .line {
+    position: absolute;
+    background-color: black; /* Line color */
+    height: 10px; /* Thickness of the lines */
+    width: 0; /* Initially no width */
+    top: 50%;
+    left: 50%;
+    transform-origin: center;
+    transition: width 0.5s ease-in-out;
+}
+
+.draw-x .line1 {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.draw-x .line2 {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.draw-x .line1.animate,
+.draw-x .line2.animate {
+    width: 141%; /* Fully extend lines to cover diagonal of square */
+}
+
+/* Drawing "O" */
+.draw-o {
+    position: relative;
+    width: 100%; /* Extend to cover the entire grid */
+    height: 100%;
+}
+
+.draw-o .circle {
+    position: absolute;
+    border: 8px solid black; /* Circle border color and thickness */
+    border-radius: 50%;
+    width: 0; /* Initially no width */
+    height: 0; /* Initially no height */
+    top: 50%;
+    left: 50.2%;
+    transform: translate(-50%, -50%);
+    transition: width 0.5s ease-in-out, height 0.5s ease-in-out;
+}
+
+.draw-o .circle.animate {
+    width: 90%; /* Fully extend circle to fit within grid bounds */
+    height: 90%;
+}
+
+/* Draw overlay styling */
+.draw-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(165, 101, 255, 0.8);
+    font-size: 2em;
+    font-weight: bold;
+    color: black;
+    z-index: 10;
+    pointer-events: none;
+    border: 2px solid gray;
+}
+
+/* Overall Winner Overlay */
+.overall-winner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Dark transparent background */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 3em;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+.replay-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.replay-button:hover {
+    background-color: lightgray;
+}
+
+

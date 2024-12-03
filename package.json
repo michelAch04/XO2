@@ -1,0 +1,14 @@
+{
+  "name": "xo2",
+  "version": "1.0.0",
+  "description": "Ultimate Tic Tac Toe -- GIN 446 Team Project",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^11.0.2"
+  }
+}
