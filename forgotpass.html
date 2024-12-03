@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="index.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>Reset your password</title>
+</head>
+
+<body>
+    <div class="login-container">
+        <h2>Reset Password</h2>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Email" required>
+            <p>Email should be associated with an account.</p>
+        </div>
+        <button id="reset" type="button">Reset</button>
+</body>
+
+<script type="module" defer>
+    import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+    // Initialize Firebase Authentication and get a reference to the service
+    const auth = getAuth();
+
+    const reset = document.getElementById("reset");
+    reset.addEventListener("click", function (event) {
+        event.preventDefault();
+        const email = document.getElementById("email").value;
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                // Password reset email sent!
+                alert("Email sent to: ", email);
+                // ..
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                alert(errorMessage);
+                // ..
+            });
+    })
+</script>
+
+</html>
