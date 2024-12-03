@@ -60,3 +60,79 @@ button:hover {
     color: red;
     font-size: 14px;
 }
+
+/*SUCCESS MSG STYLING*/
+#success-message {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Title text */
+.titletext {
+    color: #4caf50;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+
+.checkmark-circle {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+.circle-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: #e0f7e9;
+    border: 5px solid #4caf50;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: grow-circle 0.3s ease-out;
+}
+
+.checkmark-icon {
+    position: absolute;
+    left: 25%;
+    top: 37%;
+    width: 50%;
+    height: 12px;
+    border: solid #4caf50;
+    border-width: 0 0 5px 5px;
+    transform: rotate(-45deg) scale(0);
+    animation: draw-checkmark 0.1s ease-out 0.3s forwards;
+}
+
+@keyframes grow-circle {
+    from {
+        transform: scale(0);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes draw-checkmark {
+    from {
+        transform: rotate(-45deg) scale(0);
+    }
+
+    to {
+        transform: rotate(-45deg) scale(1);
+    }
+}

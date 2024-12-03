@@ -1,9 +1,8 @@
 //IMPORTANT: THIS FILE IS USED TO IMPORT FIREBASE MODULES
 
 //---------------------------------------------------------------------------------------------------------//
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
 
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -23,17 +22,3 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
-
-// Initialize Firebase Authentication and get a reference to the service
-const auth = getAuth();
-createUserWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // Signed up 
-    const user = userCredential.user;
-    // ...
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // ..
-  });
