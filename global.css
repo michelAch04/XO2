@@ -1,0 +1,16 @@
+:root{
+    /* CSS HSL */
+    --purple-0: hsla(290, 83%, 25%, 1);
+    --purple-1: hsla(260, 78%, 14%, 1);
+    --purple-2: hsla(270, 67%, 7%, 1);
+    --blue-0: hsla(184, 90%, 52%, 1);
+    --pink-0: hsla(326, 90%, 47%, 1);
+    --orange-0: hsla(30, 88%, 57%, 1);
+}
+
+
+*{
+    font-family: "Audiowide", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}

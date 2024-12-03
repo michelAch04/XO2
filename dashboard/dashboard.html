@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="dashboard.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/global.css">
+
+    <title>Game Navigator</title>
+</head>
+<body>
+
+    <main>
+        <div class="create-new-game">
+            <h1>Create New Game</h1>
+            <button class="create-game-button" onclick="generateCode()">
+                GET CODE
+            </button>
+            <div id="generated-code-container">
+
+            </div>
+
+        </div>
+    
+        <div>
+            or
+        </div>
+    
+        <div class="enter-game">
+            <h1>Enter Game Code</h1>
+            <form class="code-input">
+                <input type="text" maxlength="1" class="digit-input" id="digit-1" oninput="moveToNext(this, 'digit-2');" required>
+                <input type="text" maxlength="1" class="digit-input" id="digit-2" oninput="moveToNext(this, 'digit-3');" required>
+                <input type="text" maxlength="1" class="digit-input" id="digit-3" oninput="moveToNext(this, 'digit-4');" required>
+                <input type="text" maxlength="1" class="digit-input" id="digit-4" oninput="moveToNext(this, 'digit-5');" required>
+                <input type="text" maxlength="1" class="digit-input" id="digit-5" oninput="moveToNext(this, 'digit-6');" required>
+                <input type="text" maxlength="1" class="digit-input" id="digit-6" oninput="moveToNext(this, '');" required>    
+            </form>
+            <div id="entered-code-container">
+
+            </div>
+        </div>
+    </main>
+</body>
+<script src="dashboard.js"></script>
+</html>

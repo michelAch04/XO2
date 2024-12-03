@@ -1,0 +1,38 @@
+body{
+    margin: 20px;
+    padding: 10px;
+    background-color: var(--purple-2);
+    color: var(--blue-0);
+}
+
+main{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+main div, main form{
+    margin: 10px;
+    padding: 10px;
+}
+
+.enter-game, .create-new-game{
+    border: 5px solid var(--pink-0);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.enter-game .code-input{
+    display: flex;
+    flex-direction: row;
+
+    input{
+        height: 60px;
+        width: 40px;
+
+        border: none;
+        margin: 5px;
+        padding: 5px;
+    }
+}
