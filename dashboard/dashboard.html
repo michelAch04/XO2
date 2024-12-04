@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/global.css">
 
+    <script type="module" src="/index.js" defer></script>
+
     <title>Game Navigator</title>
 </head>
 <body>
@@ -17,8 +19,8 @@
     <main>
         <div class="create-new-game">
             <h1>Create New Game</h1>
-            <button class="create-game-btn" onclick="generateCode()">
-                GET CODE
+            <button id="generate-code-btn" class="generate-code-btn">
+                GENERATE CODE
             </button>
         </div>
     
@@ -55,6 +57,7 @@
             ENTER ROOM
         </button>
     </section>
+    <script type="module" src="dashboard.js" defer></script>
 </body>
-<script src="dashboard.js"></script>
+
 </html>
