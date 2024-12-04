@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,11 +12,23 @@
     <link rel="stylesheet" href="global.css">
 
     <script type="module" src="index.js" defer></script>
+    <script src="rules/loadrules.js"></script>
     <title>Home</title>
-</head>
-<body>
-    <a href="register/register.html">Register Page</a> 
 
-    <a href="login/login.html">Login Page</a>
+</head>
+
+<body>
+    <div id="index-container">
+        <h1>Welcome to XO²: The Ultimate Tic-tac-toe Game!</h1>
+        <div id="main-content">
+            <h1>How to play?</h1>
+            <div id="rules-container">Loading rules...</div>
+        </div>
+        <div id="links">
+            <a href="login/login.html">If you already have an account, Login here!</a>
+            <a href="register/register.html">Don't miss out, create an account now!</a>
+        </div>
+    </div>
 </body>
+
 </html>

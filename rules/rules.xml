@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rules SYSTEM "rules.dtd">
+<rules>
+  <general>
+    <rule id="rule1">
+      <title>Board: </title>
+      <description>Composed of nine tic-tac-toe boards arranged in a 3 × 3 grid.</description>
+    </rule>
+    <rule id="rule2">
+      <title>Objective: </title>
+      <description>Win (align) three mini-boards in a row (horizontally, vertically, or
+        diagonally).</description>
+    </rule>
+    <rule id="rule3">
+      <title>Time Limit: </title>
+      <description>Each move must be made within 30 seconds.</description>
+    </rule>
+  </general>
+  <gameplay>
+    <rule id="rule4">
+      <description>Each turn, players place their mark (X or O) in one cell of a mini-board.</description>
+    </rule>
+    <rule id="rule5">
+      <title>Objective: </title>
+      <description>Align three boards in a row, column, or diagonal.</description>
+    </rule>
+    <rule id="rule6">
+      <title>Ultimate Rule: </title>
+      <description> The game starts with X playing wherever they want in any of the 81 empty spots.
+        Next, the opponent plays, but they are forced to play in the small board corresponding to
+        the location of the previous move, relative to the small board in which it was played. </description>
+    </rule>
+    <rule id="rule7">
+      <title>What happens when a player wins a smaller board?</title>
+      <description> The entire small board is marked as won by the player in the larger board. Once
+        a small board is won or filled, no more moves may be played there. If sent to such a board,
+        the player can choose to play on any other board. </description>
+    </rule>
+    <rule id="rule8">
+      <title>Game End:</title>
+      <description> Gameplay ends when either a player wins the larger board or there are no legal
+        moves left, resulting in a draw. </description>
+    </rule>
+  </gameplay>
+  <advanced>
+    <rule id="rule9">
+     <description>The player that plays the first move always has an advantage in this game 
+     and is the favorite to win (assuming perfect play).</description>
+    </rule>
+    <rule id="rule10">
+     <description>Game openings and strategies are much more complex in this variant of Tic-Tac-Toe,
+      as each move is crucial to the outcome of the large board.</description>
+    </rule>
+    <rule id="rule11">
+     <description>There are no defined/clear strategies and openings, so the only way to master XO²
+     is by practicing. Good luck! :)</description>
+    </rule>
+  </advanced>
+</rules>
