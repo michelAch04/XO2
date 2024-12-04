@@ -16,7 +16,7 @@ main div, main form{
     padding: 10px;
 }
 
-.create-game-btn, #submit-code-btn{
+#generate-code-btn, #submit-code-btn{
     background-color: var(--orange-0);
     border: none;
     padding: 5px;
