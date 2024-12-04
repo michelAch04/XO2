@@ -71,14 +71,14 @@ async function generateCode() { //for creating a code
     while(!validCodeEntered){
         for (let i = 0; i < 6; i++) {
             const randomIndex = Math.floor(Math.random() * characters.length);
-            code += characters[randomIndex];        
+            code += characters[randomIndex]; //generate random 6 digit code
         }
 
         validCodeEntered = await validateCode(0, code);
     }  
 
     messageDisplayContainer.textContent = validCodeEntered.message;
-    enableRoomNavigator(0, code);
+    enableRoomNavigator(0, code); //create new room with generated code
 }
 
 async function submitCode(){
@@ -88,16 +88,18 @@ async function submitCode(){
 
     //window.alert(`dashboard.js says code is ${validCodeEntered.message}.`)
 
+    //if code valid display
     if(validCodeEntered.isValid){
         messageDisplayContainer.classList.remove('error');
         messageDisplayContainer.classList.add('code');
     }
+    //else display error
     else{
         messageDisplayContainer.classList.remove('code');
         messageDisplayContainer.classList.add('error');
     }
     messageDisplayContainer.textContent = validCodeEntered.message;
-    enableRoomNavigator(1, submittedCode);
+    enableRoomNavigator(1, submittedCode); //enter existing room with submitted code
 }
 
 //so that the code input moves digits on its own
@@ -113,11 +115,12 @@ function moveToNext(current, nextId) {
 
 //-----------------------------------------------------------------------------------//
 
-function enableRoomNavigator(mode, code){
+function enableRoomNavigator(mode, code){ //navigation
     const roomNavigator = document.querySelector('section.room-navigator');
     const createRoomBtn = document.getElementById('create-room-btn');
     const enterRoomBtn = document.getElementById('enter-room-btn');   
 
+    //clones to remove previous event listeners
     const createRoomBtnClone = createRoomBtn.cloneNode(true);
     const enterRoomBtnClone = enterRoomBtn.cloneNode(true);
 
