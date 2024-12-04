@@ -1,4 +1,4 @@
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getAuth, setPersistence, browserLocalPersistence, browserSessionPersistence, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 // Initialize Firebase Authentication and Firestore
@@ -11,6 +11,7 @@ submit.addEventListener("click", async function (event) {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
   const message = document.getElementById('message');
+  const rememberMe = document.getElementById("remember-me").checked;
 
   // Check if username and password are provided
   if (!username || !password) {
@@ -32,23 +33,32 @@ submit.addEventListener("click", async function (event) {
 
     // Assuming we find exactly one user with the given username
     const userDoc = querySnapshot.docs[0];  // First matching document
-    const email = userDoc.data().email;  // Assuming the email field is named 'email'
+    const email = userDoc.data().email;
 
     // Sign in with the email and password retrieved from Firestore
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed in 
-        const user = userCredential.user;
-        window.location.href = "/dashboard/dashboard.html";
+    // Set persistence mode before signing in
+    const persistence = rememberMe ? browserLocalPersistence : browserSessionPersistence;
+    setPersistence(auth, persistence)
+      .then(() => {
+        // Proceed with the existing signInWithEmailAndPassword logic
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            window.location.href = "/dashboard/dashboard.html";
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            if (errorMessage.includes("invalid-credential") || errorMessage.includes("user-not-found")) {
+              message.textContent = "Invalid username or password.";
+            } else {
+              message.textContent = "An error occurred. Please try again.";
+            }
+          });
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        if (errorMessage.includes("invalid-credential") || errorMessage.includes("user-not-found")) {
-          message.textContent = "Invalid username or password.";
-        } else {
-          message.textContent = "An error occurred. Please try again.";
-        }
+        console.error("Error setting persistence:", error);
+        message.textContent = "An error occurred. Please try again.";
       });
 
   } catch (error) {
