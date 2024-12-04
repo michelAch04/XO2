@@ -1,4 +1,4 @@
-import { getFirestore, getDocs, collection, query } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js"; 
+import { getFirestore, setDoc, doc, addDoc, getDocs, collection, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js"; 
 const db = getFirestore();
 
 async function getRoomCodes(){
@@ -51,4 +51,28 @@ export async function validateCode(mode, code){
         console.error("Error validating code: ", error);
         return { isValid: false, message: "Error occurred while validating the code." };
     }
+}
+
+export async function createRoom(code){
+
+    const newRoom = doc(db, 'Rooms', `room-${code}`);
+
+    await setDoc(newRoom, {
+        host: null, //to be set later
+        guest: null, //to be set later
+        status: 'waiting', //waiting, ready, active, deactivated
+        roomCode: code,
+        games: null, //to be set later when making a new game
+        createdAt: serverTimestamp(),
+    })
+
+    //redirect to room with ID
+}
+
+export function enterRoom(code){
+
+    //search for room
+    //send user to room
+
+    window.alert(code);
 }

@@ -1,54 +1,5 @@
-import { validateCode } from './validator.js';
+import { validateCode, createRoom, enterRoom } from './validator.js';
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-
-const auth = getAuth();
-let logoutTimer;
-
-// Check if the user is authenticated
-function checkAuthStatus() {
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            console.log("User is logged in:", user.email);
-
-            // If the session is non-persistent, set up the inactivity logout timer
-            if (!isPersistentLogin(user)) {
-                setupInactivityLogout();
-            }
-        } else {
-            alert("Session expired. Please log in again.");
-            window.location.href = "/login/login.html";
-        }
-    });
-}
-
-// Determine if the session is persistent (from "Remember Me")
-function isPersistentLogin(user) {
-    // Firebase does not provide a direct method to check persistence,
-    // but if user data is still present after browser closure, it's likely persistent.
-    return localStorage.getItem('firebase:authUser') !== null;
-}
-
-// Set up a 20-minute inactivity timeout
-function setupInactivityLogout() {
-    resetLogoutTimer();
-
-    ['click', 'mousemove', 'keypress'].forEach((event) => {
-        window.addEventListener(event, resetLogoutTimer);
-    });
-}
-
-function resetLogoutTimer() {
-    if (logoutTimer) clearTimeout(logoutTimer);
-    logoutTimer = setTimeout(() => {
-        alert("You have been logged out due to inactivity.");
-        signOut(auth).then(() => {
-            window.location.href = "/login/login.html";
-        }).catch(console.error);
-    }, 20 * 60 * 1000); // 20 minutes
-}
-
-checkAuthStatus();
-
 
 const messageDisplayContainer = document.getElementById('message-display');
 const submittedCode = ['','','','','','',''];
@@ -189,18 +140,51 @@ function enableRoomNavigator(mode, code){
     roomNavigator.style.setProperty('display', 'flex');
 }
 
-function createRoom(code){
+//----------------------------------------EXPIRED LOGIN-----------------------------------------
+const auth = getAuth();
+let logoutTimer;
 
-    //create room
-    //send user to room
+// Check if the user is authenticated
+function checkAuthStatus() {
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            console.log("User is logged in:", user.email);
 
-    window.alert(code);
+            // If the session is non-persistent, set up the inactivity logout timer
+            if (!isPersistentLogin(user)) {
+                setupInactivityLogout();
+            }
+        } else {
+            alert("Session expired. Please log in again.");
+            window.location.href = "/login/login.html";
+        }
+    });
 }
 
-function enterRoom(code){
-
-    //search for room
-    //send user to room
-
-    window.alert(code);
+// Determine if the session is persistent (from "Remember Me")
+function isPersistentLogin(user) {
+    // Firebase does not provide a direct method to check persistence,
+    // but if user data is still present after browser closure, it's likely persistent.
+    return localStorage.getItem('firebase:authUser') !== null;
 }
+
+// Set up a 20-minute inactivity timeout
+function setupInactivityLogout() {
+    resetLogoutTimer();
+
+    ['click', 'mousemove', 'keypress'].forEach((event) => {
+        window.addEventListener(event, resetLogoutTimer);
+    });
+}
+
+function resetLogoutTimer() {
+    if (logoutTimer) clearTimeout(logoutTimer);
+    logoutTimer = setTimeout(() => {
+        alert("You have been logged out due to inactivity.");
+        signOut(auth).then(() => {
+            window.location.href = "/login/login.html";
+        }).catch(console.error);
+    }, 20 * 60 * 1000); // 20 minutes
+}
+
+checkAuthStatus();
