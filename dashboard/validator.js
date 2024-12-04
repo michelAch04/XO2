@@ -1,4 +1,4 @@
-import { getFirestore, getDocs, collection, query, select } from "firebase/firestore"; 
+import { getFirestore, getDocs, collection, query } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js"; 
 const db = getFirestore();
 
 async function getRoomCodes(){
@@ -16,7 +16,7 @@ async function getRoomCodes(){
 
 }
 
-function validateCode(code){
+export function validateCode(code){
 
     const codes = getRoomCodes();
     window.alert(codes);

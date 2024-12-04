@@ -1,4 +1,4 @@
-import {validateCode} from './validator.js';
+import { validateCode } from './validator.js';
 
 const codeDisplayContainer = document.getElementById('code-display');
 const submittedCode = [0,0,0,0,0,0];
