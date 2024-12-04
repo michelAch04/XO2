@@ -1,0 +1,8 @@
+<!ELEMENT rules (general, gameplay, advanced)>
+<!ELEMENT general (rule+)>
+<!ELEMENT gameplay (rule+)>
+<!ELEMENT advanced (rule+)>
+<!ELEMENT rule (title?, description?)>
+<!ATTLIST rule id ID #REQUIRED>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT description (#PCDATA)>

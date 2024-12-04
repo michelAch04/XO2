@@ -1,11 +1,60 @@
 body {
-    background-color: #f4f4f9;
     display: flex;
     justify-content: center;
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
 }
 
+/*HOME PAGE STYLING*/
+#index-container > h1{
+    text-align: center;
+    padding: 30px 60px;
+    color: var(--blue-0);
+    font-size: 2.5rem;
+}
+#main-content{
+    padding: 0 20px 15px;
+    margin: 0px auto 20px;
+    width: 70%;
+    border: 5px solid var(--pink-0);
+    height: fit-content;
+}
+#main-content h1{
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    color: var(--orange-0);
+    font-size: 2rem;
+}
+#main-content h2{
+    color: rgb(231, 255, 47);
+    font-size: 1.3rem;
+    margin: 0;
+}
+#main-content li{
+    color:thistle;
+    margin-bottom: 15px;
+}
+#main-content ul{
+    margin-bottom: 30px;
+}
+
+#links{
+    display: flex;
+    justify-content: space-around;
+    margin: 0 80px;
+}
+#links a{
+    background-color: var(--orange-0);
+    padding: 10px;
+    transition: background-color 0.3s ease;
+}
+#links a:hover{
+    background-color: #ce6700;
+}
+
+/*LOGIN AND REGISTER PAGE STYLING*/
 .login-container {
     background: white;
     margin-top: 20px;
@@ -56,7 +105,6 @@ button:hover {
     background-color: #0056b3;
 }
 
-/*SUCCESS MSG STYLING*/
 #success-message {
     display: none;
     flex-direction: column;
@@ -70,7 +118,6 @@ button:hover {
     box-sizing: border-box;
 }
 
-/* Title text */
 .titletext {
     color: #4caf50;
     font-size: 24px;

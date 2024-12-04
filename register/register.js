@@ -26,6 +26,13 @@ submit.addEventListener("click", async function (event) {
     return;
   }
 
+  if(username.toLowerCase().includes('admin')){
+    const usernameMsg = document.getElementById('username-message');
+    usernameMsg.textContent = "Username cannot contain 'admin'!";
+    window.location.href = "#login-form";
+    return;
+  }
+
   if (confirmPassword !== password) {
     const confirmMessage = document.getElementById('confirm-message');
     confirmMessage.textContent = "Passwords do not match.";

@@ -44,6 +44,7 @@ submit.addEventListener("click", async function (event) {
         signInWithEmailAndPassword(auth, email, password)
           .then((userCredential) => {
             const user = userCredential.user;
+            console.log(persistence);
             window.location.href = "/dashboard/dashboard.html";
           })
           .catch((error) => {
