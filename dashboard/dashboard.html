@@ -31,24 +31,24 @@
         <div class="enter-game">
             <h1>Enter Game Code</h1>
             <form class="code-input">
-                <input type="text" maxlength="1" class="digit-input" id="digit-1" oninput="moveToNext(this, 'digit-2');" required>
-                <input type="text" maxlength="1" class="digit-input" id="digit-2" oninput="moveToNext(this, 'digit-3');" required>
-                <input type="text" maxlength="1" class="digit-input" id="digit-3" oninput="moveToNext(this, 'digit-4');" required>
-                <input type="text" maxlength="1" class="digit-input" id="digit-4" oninput="moveToNext(this, 'digit-5');" required>
-                <input type="text" maxlength="1" class="digit-input" id="digit-5" oninput="moveToNext(this, 'digit-6');" required>
-                <input type="text" maxlength="1" class="digit-input" id="digit-6" oninput="moveToNext(this, '');" required>    
+                <input type="text" maxlength="1" class="digit-input" id="digit-1" required>
+                <input type="text" maxlength="1" class="digit-input" id="digit-2" required>
+                <input type="text" maxlength="1" class="digit-input" id="digit-3" required>
+                <input type="text" maxlength="1" class="digit-input" id="digit-4" required>
+                <input type="text" maxlength="1" class="digit-input" id="digit-5" required>
+                <input type="text" maxlength="1" class="digit-input" id="digit-6" required>    
             </form>
             <div id="error-container">
 
             </div>
-            <button id="submit-code-btn" onclick="submitCode()">
+            <button id="submit-code-btn">
                 SUBMIT
             </button>
         </div>
     </main>
     <section class="room-navigator">
-        <div id="code-display">
-            Your Code is: 
+        <div id="message-display" class="">
+            
         </div>
         <button id="create-room-btn">
             CREATE ROOM
