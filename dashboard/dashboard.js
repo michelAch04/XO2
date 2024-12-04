@@ -132,7 +132,7 @@ function enableRoomNavigator(mode, code){ //navigation
     if(mode===0){
         enterRoomBtnClone.style.setProperty('display', 'none');
         createRoomBtnClone.style.setProperty('display', 'block');
-        createRoomBtnClone.addEventListener('click', ()=>createRoom(code));
+        createRoomBtnClone.addEventListener('click', ()=>createRoom(code, auth.currentUser.uid));
     }
     //we are entering an existing room
     else if(mode===1){

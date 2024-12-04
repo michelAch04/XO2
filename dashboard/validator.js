@@ -1,11 +1,6 @@
 import { getFirestore, setDoc, doc, addDoc, getDocs, collection, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js"; 
-import { getAuth } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
 const db = getFirestore();
-
-//get current user (logged-in)
-const auth = getAuth();
-const currentUser = auth.currentUser;
 
 async function getRoomCodes(){
 
@@ -59,14 +54,13 @@ export async function validateCode(mode, code){
     }
 }
 
-export async function createRoom(code){
+export async function createRoom(code, userID){
 
     const newRoom = doc(db, 'Rooms', `room-${code}`);
+    alert(userID);
 
     await setDoc(newRoom, {
-        host: currentUser.uid, //user that created the room
-        //test host when you want to use createRoom pls
-
+        host: userID, //user that created the room
         guest: null, //to be set later
         status: 'waiting', //waiting, ready, active, deactivated
         roomCode: code,
@@ -74,8 +68,6 @@ export async function createRoom(code){
         createdAt: serverTimestamp(),
     })
 
-    //debug
-    console.log(`Room ${code} created by ${currentUser.displayName ? currentUser.displayName : "Anonymous"}`);
     //redirect to room with ID
 }
 
