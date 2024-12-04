@@ -2,18 +2,18 @@ body {
     background-color: #f4f4f9;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
     margin: 0;
     font-family: Arial, Helvetica, sans-serif;
 }
 
 .login-container {
     background: white;
+    margin-top: 20px;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    height: fit-content;
+    width: 400px;
     text-align: center;
 }
 
@@ -22,7 +22,7 @@ h2 {
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     text-align: left;
 }
 
@@ -42,6 +42,7 @@ input {
 
 button {
     width: 100%;
+    margin-top: 5px;
     padding: 10px;
     background-color: #007bff;
     color: white;
@@ -53,12 +54,6 @@ button {
 
 button:hover {
     background-color: #0056b3;
-}
-
-.message {
-    margin-top: 15px;
-    color: red;
-    font-size: 14px;
 }
 
 /*SUCCESS MSG STYLING*/
@@ -136,3 +131,45 @@ button:hover {
         transform: rotate(-45deg) scale(1);
     }
 }
+
+.error-message{
+    font-size: 0.85rem;
+    color: red;
+    margin-left: 1%;
+    text-align: left;
+}
+
+.form-subtitle{
+    font-size: 0.7rem;
+    opacity: 0.5;
+    margin-left: 1%;
+    margin-top: 1.5%;
+    margin-bottom: -2.5%;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+#sub-login {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-size: 14px;
+  }
+  
+/* Ensure checkbox and text are aligned horizontally */
+#remember-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  
+  #remember-label input {
+    margin-right: 5px; /* Space between checkbox and text */
+  }
+  
