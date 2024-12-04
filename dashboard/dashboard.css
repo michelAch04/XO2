@@ -35,6 +35,10 @@ main div, main form{
     align-items: center;
 }
 
+.create-new-game{
+    padding: 30px;
+}
+
 .enter-game .code-input{
     display: flex;
     flex-direction: row;

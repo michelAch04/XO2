@@ -1,49 +1,48 @@
-import { getFirestore, setDoc, doc, addDoc, getDocs, collection, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js"; 
+import { getFirestore, setDoc, doc, getDoc, getDocs, updateDoc, collection, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const db = getFirestore();
 
-async function getRoomCodes(){
-
-    try{
+async function getRoomCodes() {
+    try {
         const roomsCollection = collection(db, "Rooms");
         const roomCodeQuery = query(roomsCollection);
         const querySnapshot = await getDocs(roomCodeQuery);
 
         // Map through documents and return an array of room codes
-        return querySnapshot.docs.map(doc => doc.data().RoomCode);
+        const roomCodes = querySnapshot.docs.map(doc => doc.data().roomCode);
+        return roomCodes;
     }
     catch (error) {
         console.error("Error fetching room codes: ", error);
-    } 
-
+    }
 }
 
-export async function validateCode(mode, code){
+export async function validateCode(mode, code) {
     //if mode = 0 -> creating new code
-        //compare code to list of codes
-            //if no codes match then accept code as valid
-            //else mark as invalid
+    //compare code to list of codes
+    //if no codes match then accept code as valid
+    //else mark as invalid
 
     //if mode = 1 -> entering existing code
-        //compare code to list of codes
-            //if no codes match then code is invalid
-            //else accept code
+    //compare code to list of codes
+    //if no codes match then code is invalid
+    //else accept code
 
-    try{
+    try {
         const roomCodes = await getRoomCodes(); // Fetch existing room codes
-        // window.alert(`validator awaited ${roomCodes}`);
+        //window.alert(`validator awaited ${roomCodes}`);
 
-        if (mode === 0){ 
+        if (mode === 0) {
             // Check if the code does not exist in the list
-            return roomCodes.includes(code) ? { isValid: false, message: `Code ${code} already exists.` } 
-                                            : { isValid: true, message: `Code ${code} is valid for creation.` };
-        } 
-        else if (mode === 1){
+            return roomCodes.includes(code) ? { isValid: false, message: `Code ${code} already exists.` }
+                : { isValid: true, message: `Code ${code} is valid for creation.` };
+        }
+        else if (mode === 1) {
             // Check if the code exists in the list
             //window.alert(`Includes entered code? -> ${roomCodes.includes(code)}`)
-            return roomCodes.includes(code) ? { isValid: true, message: `Code ${code} exists and is valid.` } 
-                                            : { isValid: false, message: `Code ${code} does not exist. Please try another code` };
-        } 
+            return roomCodes.includes(code) ? { isValid: true, message: `Code ${code} exists and is valid.` }
+                : { isValid: false, message: `Code ${code} does not exist. Please try another code` };
+        }
         else {
             return { isValid: false, message: "Invalid mode specified." };
         }
@@ -54,7 +53,7 @@ export async function validateCode(mode, code){
     }
 }
 
-export async function createRoom(code, userID){
+export async function createRoom(code, userID) {
 
     const newRoom = doc(db, 'Rooms', `room-${code}`);
     alert(userID);
@@ -71,10 +70,43 @@ export async function createRoom(code, userID){
     //redirect to room with ID
 }
 
-export function enterRoom(code){
+export async function enterRoom(code, userID) {
 
-    //search for room
-    //send user to room
+    try {
+        //room with validated cod
+        const roomRef = doc(db, 'Rooms', `room-${code}`);
+        const roomDoc = await getDoc(roomRef);
 
-    window.alert(code);
+        if (!roomDoc.exists()) {
+            alert(`Room with code ${code} does not exist.`);
+            return;
+        }
+
+        const roomData = roomDoc.data();
+        //same user cannot enter the same game
+        if(roomData.host === userID){
+            alert('You are already in the game!');
+            return;
+        }
+
+        if (roomData.status === 'waiting') {
+            // Add the user as the guest
+            await updateDoc(roomRef, {
+                guest: userID,
+                status: 'ready' // Mark the room as ready since the guest joined
+            });
+            alert(`You have successfully joined the room: ${code}`);
+            //Redirect to room
+
+        } else if (roomData.status === 'ready' || roomData.status === 'active') {
+            //game already started or 2 players in room
+            alert("This room is already active or in progress. Joining is not allowed.");
+        } else {
+            alert("This room is no longer available.");
+            //replace all alerts with messages?
+        }
+    } catch (error) {
+        console.error("Error entering room:", error);
+        alert("An error occurred while trying to enter the room. Please try again.");
+    }
 }

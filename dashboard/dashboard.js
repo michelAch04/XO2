@@ -78,6 +78,20 @@ async function generateCode() { //for creating a code
     }  
 
     messageDisplayContainer.textContent = validCodeEntered.message;
+    const createRoomBtn = document.getElementById('create-room-btn');
+    
+    //adjust styling if error or valid
+    if(validCodeEntered.isValid === false){
+        alert(createRoomBtn);
+        createRoomBtn.style.display = "none";
+        messageDisplayContainer.style.color = "red";
+        messageDisplayContainer.style.fontSize = "18px";
+    }
+    else{
+        createRoomBtn.style.display = "block";
+        messageDisplayContainer.style.color = "var(--blue-0)";
+        messageDisplayContainer.style.fontSize = "14px";
+    }
     enableRoomNavigator(0, code); //create new room with generated code
 }
 
@@ -85,6 +99,19 @@ async function submitCode(){
     let validCodeEntered = false;
 
     validCodeEntered = await validateCode(1, submittedCode.join(""));
+    const enterRoomBtn = document.getElementById('enter-room-btn');
+    
+    //adjust styling if error or valid
+    if(validCodeEntered.isValid === false){
+        enterRoomBtn.style.display = "none";
+        messageDisplayContainer.style.color = "red";
+        messageDisplayContainer.style.fontSize = "18px";
+    }
+    else{
+        enterRoomBtn.style.display = "block";
+        messageDisplayContainer.style.color = "var(--blue-0)";
+        messageDisplayContainer.style.fontSize = "14px";
+    }
 
     //window.alert(`dashboard.js says code is ${validCodeEntered.message}.`)
 
@@ -138,7 +165,7 @@ function enableRoomNavigator(mode, code){ //navigation
     else if(mode===1){
         createRoomBtnClone.style.setProperty('display', 'none');
         enterRoomBtnClone.style.setProperty('display', 'block');
-        enterRoomBtnClone.addEventListener('click', ()=>enterRoom(code.join("")));
+        enterRoomBtnClone.addEventListener('click', ()=>enterRoom(code.join(""), auth.currentUser.uid));
     }
     roomNavigator.style.setProperty('display', 'flex');
 }
