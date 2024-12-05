@@ -1,37 +1,17 @@
-const grids = document.querySelectorAll('.grid');
-let playerTurn = Math.floor(Math.random() * 2) + 1;
+export function markMove(latestMove, currentTurn){
+    const [currentGridIndex, currentCellIndex] = latestMove.split('-');  // Split the string into two parts
+    const currentGrid = document.querySelector(`.grid[data-grid="${currentGridIndex}"]`);
+    const currentCell = currentGrid.querySelector(`.cell[data-cell="${currentCellIndex}"]`);
+    const sign = currentTurn === true ? 'X' : 'O';
 
-function fillBoard() {
-    grids.forEach((grid) => {
-        grid.innerHTML = `
-                <button class="cell" data-cell="0"></button>
-                <button class="cell" data-cell="1"></button>
-                <button class="cell" data-cell="2"></button>
-                <button class="cell" data-cell="3"></button>
-                <button class="cell" data-cell="4"></button>
-                <button class="cell" data-cell="5"></button>
-                <button class="cell" data-cell="6"></button>
-                <button class="cell" data-cell="7"></button>
-                <button class="cell" data-cell="8"></button>
-        `;
-        grid.classList.add('active');
-    });
+    currentCell.innerHTML = sign;
 }
-fillBoard();
-
-grids.forEach(grid => {
-    const cells = grid.querySelectorAll('.cell');
-    cells.forEach(cell => {
-        cell.addEventListener("click", () => playTurn(grid.dataset.grid, cell.dataset.cell));
-    })
-});
-
 //----------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------
+const grids = document.querySelectorAll('.grid');
 
-
-function playTurn(gridIndex, cellIndex) {
+export function playTurn(gridIndex, cellIndex, currentTurn) {
     const currentGrid = document.querySelector(`.grid[data-grid="${gridIndex}"]`);
     const currentCell = currentGrid.querySelector(`.cell[data-cell="${cellIndex}"]`);
 
@@ -39,14 +19,11 @@ function playTurn(gridIndex, cellIndex) {
         return; // Ignore invalid moves
     }
 
-
-    currentCell.textContent = playerTurn === 1 ? "X" : "O";
+    currentCell.textContent = currentTurn === true ? "X" : "O";
     currentCell.classList.add('full');
     currentGrid.classList.remove('active');
     checkGridCompletion(gridIndex);
-    checkWin();
-
-    playerTurn = playerTurn === 1 ? 2 : 1;
+    const winSign = checkWin(); //X, O or null
 
     const nextGrid = document.querySelector(`.grid[data-grid="${cellIndex}"`);
     if (nextGrid && nextGrid.classList.contains('incomplete')) {
@@ -62,6 +39,7 @@ function playTurn(gridIndex, cellIndex) {
             }
         });
     }
+    return winSign;
 }
 
 function checkGridCompletion(gridIndex) {
@@ -100,7 +78,7 @@ function checkWin() {
         if (grid.classList.contains('x-win')) {
             return 'X';
         }
-        else if(grid.classList.contains('o-win')){
+        else if (grid.classList.contains('o-win')) {
             return 'O';
         }
         return null; // Grid is either incomplete or a draw
@@ -118,8 +96,10 @@ function checkWin() {
         const [a, b, c] = pattern;
         if (gridStates[a] && gridStates[a] === gridStates[b] && gridStates[b] === gridStates[c]) {
             displayOverallWinner(gridStates[a]); // Pass the winner's sign
+            return gridStates[a];
         }
     }
+    return null;
 }
 
 //DISPLAY
@@ -166,10 +146,10 @@ function displayGridCompletion(currentGrid, winnerSign) {
     // Add an overlay div for the drawing animation
     const overlay = document.createElement('div');
     overlay.classList.add('winner-draw');
-    if(winnerSign === 'X'){
+    if (winnerSign === 'X') {
         currentGrid.classList.add('x-win');
     }
-    else{
+    else {
         currentGrid.classList.add('o-win');
     }
     overlay.innerHTML = winnerSign === 'X' ? createXAnimation() : createOAnimation();
@@ -213,6 +193,24 @@ function displayOverallWinner(winnerSign) {
 //----------------------TO ENABLE AND DISABLE---------------------------------
 //----------------------------------------------------------------------------
 //----------------------------------------------------------------------------
+
+export function disableBoard() {
+    grids.forEach(grid => {
+        const cells = grid.querySelectorAll('.cell');
+        cells.forEach(cell => {
+            cell.classList.add('disabled');
+        })
+    })
+}
+
+export function enableBoard() {
+    grids.forEach(grid => {
+        const cells = grid.querySelectorAll('.cell');
+        cells.forEach(cell => {
+            cell.classList.remove('disabled');
+        })
+    })
+}
 
 
 

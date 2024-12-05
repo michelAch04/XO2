@@ -222,6 +222,12 @@ h1 {
     pointer-events: none;
     border: 2px solid gray;
 }
+.disabled{
+    pointer-events: none;
+}
+.disabled:hover{
+    text-decoration: none;
+}
 
 /* Overall Winner Overlay */
 .overall-winner-overlay {
