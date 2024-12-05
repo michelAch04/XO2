@@ -110,5 +110,5 @@ export async function enterRoom(code, userID) {
 }
 
 function redirectToRoom(code){
-    window.location.href = `/game/room.html?roomCode=${code}`;
+    window.location.href = `/public/game/room.html?roomCode=${code}`;
 }
