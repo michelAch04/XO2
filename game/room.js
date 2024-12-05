@@ -173,15 +173,15 @@ function buildBoard(){
     //build sub-grids
     document.querySelectorAll('.grid').forEach(grid=>{
         grid.innerHTML = `
-                <button class="cell" data-cell="0"></button>
-                <button class="cell" data-cell="1"></button>
-                <button class="cell" data-cell="2"></button>
-                <button class="cell" data-cell="3"></button>
-                <button class="cell" data-cell="4"></button>
-                <button class="cell" data-cell="5"></button>
-                <button class="cell" data-cell="6"></button>
-                <button class="cell" data-cell="7"></button>
-                <button class="cell" data-cell="8"></button>
+            <button class="cell" data-cell="0"></button>
+            <button class="cell" data-cell="1"></button>
+            <button class="cell" data-cell="2"></button>
+            <button class="cell" data-cell="3"></button>
+            <button class="cell" data-cell="4"></button>
+            <button class="cell" data-cell="5"></button>
+            <button class="cell" data-cell="6"></button>
+            <button class="cell" data-cell="7"></button>
+            <button class="cell" data-cell="8"></button>
         `;
         grid.classList.add('active');
     });
