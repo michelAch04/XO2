@@ -2,6 +2,7 @@ body{
     margin: 20px;
     padding: 10px;
     color: var(--blue-0);
+    height: 100vh !important;
 }
 
 main{
@@ -77,4 +78,146 @@ section.room-navigator{
 
 section.room-navigator *{
     margin: 10px;
-}   
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.left-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 100vh;
+    background: linear-gradient(170deg, rgba(99,11,117,1) 1%, rgba(60, 15, 108, 0.952) 40%, rgb(38, 13, 62) 100%);
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    box-shadow: 5px 0 5px rgba(0, 0, 0, 0.2);
+    margin: 0 !important;
+}
+
+.navbar-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+}
+
+.profile-icon {
+    width: 5.5vh;
+    height: 5.5vh;
+    background-color: #564caf;
+    /* Icon background color */
+    color: #fff;
+    /* Text color */
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    /* Makes it a circle */
+    text-transform: uppercase;
+    /* Capitalizes the letter */
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    padding: 0 !important;
+    cursor: pointer;
+  }
+
+.navbar-icons i{
+    color: white;
+    opacity: 0.4;
+    font-size: 23px;
+    cursor: pointer;
+}
+
+.modal {
+    display: flex; /* Ensure the modal uses flex layout */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: var(--purple-0);
+    align-items: center;
+    justify-content: center;
+    opacity: 0; /* Hidden by default */
+    pointer-events: none; /* Prevent interaction when hidden */
+    transition: opacity 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+.modal.show {
+    opacity: 1; /* Fully visible */
+    pointer-events: auto; /* Enable interaction */
+}
+
+.modal-content {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    width: 80%;
+    max-width: 400px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-20px); /* Slide-in effect start */
+    transition: transform 0.3s ease-in-out;
+}
+
+.modal.show .modal-content {
+    transform: translateY(0); /* Slide into place */
+}
+
+.modal-content h2{
+    border-bottom: 2px solid var(--purple-0);
+    width: 40%;
+    margin: 0 auto;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 1.5rem;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: var(--pink-0);
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--orange-0);
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+button:hover {
+    background-color: var(--blue-0);
+}
+
+.btn-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.edit{
+    background: transparent;
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 15px;
+    padding: 5px;
+}
+
+.modal a{
+    color: inherit;
+}
+
