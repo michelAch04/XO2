@@ -1,119 +1,6 @@
 import { getFirestore,  doc, getDoc, setDoc, onSnapshot, updateDoc} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
 
-const db = getFirestore();
-
-const urlParams = new URLSearchParams(window.location.search);
-const roomCode = urlParams.get('roomCode'); // 'roomCode' will be passed in URL
-
-const roomRef = doc(db, "Rooms", `room-${roomCode}`); 
-const startGameBtn = document.getElementById('start-game');
-
-onSnapshot(roomRef, async (roomSnap)=>{
-    if (roomSnap.exists()) {
-        const roomData = roomSnap.data();
-        //load host
-        try{
-            const host = await getDoc(doc(db, "Users", roomData.host));
-            const hostData = host.data();
-            document.getElementById('host-user').innerText = hostData.username;
-        }
-        catch(e){console.log(e);}       
-        
-        //load guest
-        try{
-            const guest = await getDoc(doc(db, "Users", roomData.guest));
-            const guestData = guest.data();
-            document.getElementById('guest-user').innerText = guestData.username;
-        }
-        catch(e){console.log(e);}
-        document.getElementById('status').innerText = roomData.status;
-        document.getElementById('room-code').innerText = roomCode;
-        
-        if(roomData.host && roomData.guest){
-            startGameBtn.style.setProperty('display', 'block');
-        }
-        else{
-            startGameBtn.style.setProperty('display', 'none');
-        }
-
-    } else {console.log("No such room!");}
-});
-
-window.addEventListener('beforeunload', async ()=>{
-    await updateDoc(roomRef, {
-        status: 'waiting',
-    });
-});
-
-let gameCounter = 0;
-startGameBtn.addEventListener('click', async ()=>{
-    //set room state to active
-    await updateDoc(roomRef, {
-        status: 'active',
-    });
-
-    buildBoard();    
-
-    //create game
-    const newGameRef = doc(db, "Games", `${roomCode}-game-${gameCounter++}`);
-    const roomData = (await getDoc(roomRef)).data();
-    console.log(roomData)
-    await setDoc(newGameRef, {
-        playerO: roomData.host,
-        playerX: roomData.guest,
-        gameState: true,
-        latestMove: '',
-        room: roomRef
-    });
-    await updateDoc(roomRef, {
-        currentGame:  newGameRef,
-    })
-
-    startGame();
-
-    //new onSnapshot
-    //alternate between turns
-})
-
-function buildBoard(){
-    //build board
-    const boardContainer = document.getElementById('gameBoard');
-    //build main grids
-    for (let i = 0; i < 9; i++) {
-        const grid = document.createElement('div');
-        grid.classList.add('grid');
-        grid.classList.add('incomplete');
-        grid.setAttribute('data-grid', `${i}`);
-        boardContainer.appendChild(grid);        
-    }    
-    //build sub-grids
-    document.querySelectorAll('.grid').forEach(grid=>{
-        grid.innerHTML = `
-                <button class="cell" data-cell="0"></button>
-                <button class="cell" data-cell="1"></button>
-                <button class="cell" data-cell="2"></button>
-                <button class="cell" data-cell="3"></button>
-                <button class="cell" data-cell="4"></button>
-                <button class="cell" data-cell="5"></button>
-                <button class="cell" data-cell="6"></button>
-                <button class="cell" data-cell="7"></button>
-                <button class="cell" data-cell="8"></button>
-        `;
-        grid.classList.add('active');
-        grid.querySelectorAll('.cell').forEach(cell => {
-            cell.addEventListener("click", () => 
-                playTurn(grid.dataset.grid, cell.dataset.cell)
-            );
-        });
-    });
-}
-
-function startGame(){
-
-}
-
-
 //-----------------------Authentication--------------------
 const auth = getAuth();
 let logoutTimer;
@@ -123,7 +10,7 @@ function checkAuthStatus() {
     onAuthStateChanged(auth, (user) => {
         if (user) {
             console.log("User is logged in:", user.email);
-
+            loadRoom();
             // If the session is non-persistent, set up the inactivity logout timer
             if (!isPersistentLogin(user)) {
                 setupInactivityLogout();
@@ -162,3 +49,150 @@ function resetLogoutTimer() {
 }
 
 checkAuthStatus();
+//------------------------------------------------------------
+
+const db = getFirestore();
+
+const urlParams = new URLSearchParams(window.location.search);
+const roomCode = urlParams.get('roomCode'); // 'roomCode' will be passed in URL
+
+const roomRef = doc(db, "Rooms", `room-${roomCode}`); 
+const startGameBtn = document.getElementById('start-game');
+
+
+async function loadRoom(){
+    //load page
+    const unsubscribeLoad = onSnapshot(roomRef, async (roomSnap)=>{
+        if (roomSnap.exists()) {
+            const roomData = roomSnap.data();
+            //load host
+            try{
+                const host = await getDoc(doc(db, "Users", roomData.host));
+                const hostData = host.data();
+                document.getElementById('host-user').innerText = hostData.username;
+            }
+            catch(e){console.log(e);}       
+            
+            //load guest
+            try{
+                const guest = await getDoc(doc(db, "Users", roomData.guest));
+                const guestData = guest.data();
+                document.getElementById('guest-user').innerText = guestData.username;
+            }
+            catch(e){console.log(e);}
+            document.getElementById('status').innerText = roomData.status;
+            document.getElementById('room-code').innerText = roomCode;
+            
+            if(auth.currentUser.uid === roomData.host){
+                if(roomData.host && roomData.guest){
+                    startGameBtn.style.setProperty('display', 'block');
+                    startGameBtn.addEventListener('click', async ()=>{
+                        await setUpGame();    
+                        unsubscribeLoad();                                       
+                        startGame();
+                    });
+                }
+                else{
+                    console.log('FATAL ERROR')
+                }
+            }
+            else if(auth.currentUser.uid === roomData.guest){
+                startGameBtn.style.setProperty('display', 'none');
+                await setUpGame();                
+                unsubscribeLoad();
+            }     
+
+        } else {console.log("No such room!");}
+    });
+
+    //update game when a user exits
+    window.addEventListener('beforeunload', async ()=>{
+        await updateDoc(roomRef, {
+            status: 'waiting',
+        });
+    });
+    console.log(auth.currentUser);
+}
+
+let gameCounter = 0;    
+async function setUpGame(){ 
+    startGameBtn.style.setProperty('display', 'none');
+    
+    //create game
+    const newGameRef = doc(db, 'Games', `${roomCode}-game-${gameCounter++}`);
+    const roomData = (await getDoc(roomRef)).data();
+
+    if(auth.currentUser.uid===roomData.host){
+        //create game doc
+        console.log(newGameRef);  
+        await setDoc(newGameRef, {
+            playerO: roomData.host,
+            playerX: roomData.guest,
+            gameState: true,
+            latestMove: '',
+            room: roomRef
+        });
+
+        //assign new game to room
+        await updateDoc(roomRef, {
+            status: 'active',
+            currentGame:  newGameRef,
+        });
+        buildBoard();
+    }
+    else if(auth.currentUser.uid===roomData.guest){
+        const unsubscribe = onSnapshot(roomRef, async (roomSnap)=>{
+            if (roomSnap.exists()) {
+                const roomData = roomSnap.data();
+                if(roomData.status==='active'){
+                    buildBoard(unsubscribe);
+                }
+            }
+        });
+    }
+    else{
+        console.log('FATAL ERROR')
+    }
+    
+}
+
+function buildBoard(){
+    //build board
+    const boardContainer = document.getElementById('gameBoard');
+    //build main grids
+    for (let i = 0; i < 9; i++) {
+        const grid = document.createElement('div');
+        grid.classList.add('grid');
+        grid.classList.add('incomplete');
+        grid.setAttribute('data-grid', `${i}`);
+        boardContainer.appendChild(grid);        
+    }    
+    //build sub-grids
+    document.querySelectorAll('.grid').forEach(grid=>{
+        grid.innerHTML = `
+                <button class="cell" data-cell="0"></button>
+                <button class="cell" data-cell="1"></button>
+                <button class="cell" data-cell="2"></button>
+                <button class="cell" data-cell="3"></button>
+                <button class="cell" data-cell="4"></button>
+                <button class="cell" data-cell="5"></button>
+                <button class="cell" data-cell="6"></button>
+                <button class="cell" data-cell="7"></button>
+                <button class="cell" data-cell="8"></button>
+        `;
+        grid.classList.add('active');
+        grid.querySelectorAll('.cell').forEach(cell => {
+            cell.addEventListener("click", () => 
+                playTurn(grid.dataset.grid, cell.dataset.cell)
+            );
+        });
+    });
+}
+
+async function startGame(){
+    const unsubscribe = onSnapshot(gameRef, (gameSnap)=>{
+        if(gameSnap.exists()){
+            gameData = gameSnap.data();
+        }
+    })
+}

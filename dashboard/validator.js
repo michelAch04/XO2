@@ -56,14 +56,12 @@ export async function validateCode(mode, code) {
 export async function createRoom(code, userID) {
 
     const newRoom = doc(db, 'Rooms', `room-${code}`);
-    alert(userID);
 
     await setDoc(newRoom, {
         host: userID, //user that created the room
         guest: null, //to be set later
         status: 'waiting', //waiting, ready, active, deactivated
         roomCode: code,
-        games: null, //to be set later when making a new game
         createdAt: serverTimestamp(),
     })
 
