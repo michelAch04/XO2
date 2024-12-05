@@ -59,7 +59,6 @@ const roomCode = urlParams.get('roomCode'); // 'roomCode' will be passed in URL
 const roomRef = doc(db, "Rooms", `room-${roomCode}`); 
 const startGameBtn = document.getElementById('start-game');
 
-
 async function loadRoom(){
     //load page
     const unsubscribeLoad = onSnapshot(roomRef, async (roomSnap)=>{
@@ -77,6 +76,8 @@ async function loadRoom(){
             try{
                 const guest = await getDoc(doc(db, "Users", roomData.guest));
                 const guestData = guest.data();
+                console.log(guestData);
+
                 document.getElementById('guest-user').innerText = guestData.username;
             }
             catch(e){console.log(e);}
@@ -156,7 +157,6 @@ async function setUpGame(){
     else{
         console.log('FATAL ERROR')
     }
-    
 }
 
 function buildBoard(){
@@ -173,78 +173,69 @@ function buildBoard(){
     //build sub-grids
     document.querySelectorAll('.grid').forEach(grid=>{
         grid.innerHTML = `
-                <button class="cell" data-cell="0"></button>
-                <button class="cell" data-cell="1"></button>
-                <button class="cell" data-cell="2"></button>
-                <button class="cell" data-cell="3"></button>
-                <button class="cell" data-cell="4"></button>
-                <button class="cell" data-cell="5"></button>
-                <button class="cell" data-cell="6"></button>
-                <button class="cell" data-cell="7"></button>
-                <button class="cell" data-cell="8"></button>
+            <button class="cell" data-cell="0"></button>
+            <button class="cell" data-cell="1"></button>
+            <button class="cell" data-cell="2"></button>
+            <button class="cell" data-cell="3"></button>
+            <button class="cell" data-cell="4"></button>
+            <button class="cell" data-cell="5"></button>
+            <button class="cell" data-cell="6"></button>
+            <button class="cell" data-cell="7"></button>
+            <button class="cell" data-cell="8"></button>
         `;
         grid.classList.add('active');
-        grid.querySelectorAll('.cell').forEach(cell => {
-            cell.addEventListener("click", () => 
-                playTurn(grid.dataset.grid, cell.dataset.cell)
-            );
-        });
     });
 }
 
 async function startGame(gameRef){
-
-    const playerX = gameData.playerX;
-    const playerO = gameData.playerO;
-
     const board = document.getElementById('gameBoard');
-    board
+    board.querySelectorAll('div.grid').forEach(grid=>{
+        grid.querySelectorAll('button').forEach(cell=>{
+            cell.addEventListener("click", async () => {
+                const currentMove = `${grid.dataset.grid}-${cell.dataset.cell}`;
+                await updateDoc(gameRef, {
+                    latestMove: currentMove,
+                })
 
-    let gameData = gameRef.data();
+                const gameData = (await getDoc(gameRef)).data();
+                const currentTurn = gameData.currentTurn;
+                //play turn -- game.js -- done
+                const verdict = playTurn(grid.dataset.grid, cell.dataset.cell, currentTurn);
+                await measureVerdict(verdict);
+            });
+        })
+    })    
+
     const unsubscribe = onSnapshot(gameRef, (gameSnap)=>{
         if(gameSnap.exists()){
-            gameData = gameSnap.data();
+            const gameData = gameSnap.data();
+            const playerX = gameData.playerX;
+
             const curTurn = gameData.gameState;
             const thisPlayer = (auth.currentUser.uid === playerX);
 
             if(curTurn===thisPlayer){
-                //enable inputs -- playTurn
-                //record inputs
+                //enable board -- game.js -- done
+                enableBoard();
+
+                //record inputs and get verdict -- done with event listeners
             }
             else{
-                //disable inputs
+                //disable board -- game.js -- done
+                disableBoard();
+                
                 //receive move made by other player from db
-                //mark move in board
-
-            }
-            
-
-            const latestMove = gameData.latestMove;
-            if(currentTurn){
-                //Player X turn
-                    //game.js: Disable inputs for player O
-                    //game.js: Record input from player X
-                    //game.js: Display input for X and O
-                    //game.js: Check for win
-                    //game.js: Check for victory
-                    //game.js: Send verdict to room
-                    //room.js: Receive verdict from game.js
-                    //room.js: Analyze verdict, compute next turn, send to db
-                    
-            }
-            else{
-                //Player O turn
-                    //Disable inputs for player X
-                    //Record input for player O
-                    //check for win
-                    //check for victory
+                const latestMove = gameData.latestMove;
+                markMove(latestMove, curTurn);
             }
         }
     })
+}
 
-    
-    //true->X || false->O
-    while(!gameData.gameEnded){
-
+async function measureVerdict(verdict){
+    if(verdict){
+        await updateDoc(roomRef, {
+            status: 'game-end'
+        })
     }
 }
