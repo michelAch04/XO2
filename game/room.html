@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,19 +15,26 @@
 
     <title>Room</title>
 </head>
+
 <body>
     <h1>Welcome to the Room!</h1>
-    <p>Room Code: <span id="room-code"></span></p>
-    <ul>
-        <li>Status: <span id="status"></span></li>
-        <li>Host: <span id="host-user"></span></li>
-        <li>Guest: <span id="guest-user"></span></li>
-    </ul>
+    <div id="roomInfo">
+        <p>Room Code: <span id="room-code"></span></p>
+        <ul>
+            <li>Status: <span id="status"></span></li>
+            <li>Host: <span id="host-user"></span></li>
+            <li>Guest: <span id="guest-user"></span></li>
+        </ul>
+    </div>
+    
     <button id="start-game">Start Game</button>
-    <div id="gameBoard">
+    <div id="boardContainer">
+        <div id="gameBoard">
 
+        </div>
     </div>
 
     <script type="module" src="room.js" defer></script>
 </body>
+
 </html>

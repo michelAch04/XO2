@@ -98,7 +98,7 @@ async function changeCredentials(username, initials) {
 
     try {
         // Check if username is taken
-        if(username === user.displayName){
+        if (username === user.displayName) {
             return;
         }
         if (username) {
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //--------------------------------------------DYNAMIC LEADERBOARD-------------------
 async function getAllUsernamesAndRatings() {
     const usersCollection = collection(db, "Users");
-    
+
     try {
         const querySnapshot = await getDocs(usersCollection);
         const userData = [];
@@ -241,8 +241,15 @@ async function loadLeaderboard() {
         users.forEach((user) => {
             const listItem = document.createElement('li');
             listItem.classList.add("user");
-            listItem.innerHTML = `<span class="username">${user.username}</span>
-            <span class="rating">${user.rating}</span>`;
+            if (auth.currentUser.displayName === user.username) {
+                listItem.id = "own-username";
+                listItem.innerHTML = `<span class="username">${user.username}</span>
+                <span class="rating">${user.rating}</span>`;
+            }
+            else {
+                listItem.innerHTML = `<span class="username">${user.username}</span>
+                <span class="rating">${user.rating}</span>`;
+            }
             userListContainer.appendChild(listItem);
         });
 
