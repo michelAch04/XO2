@@ -11,11 +11,11 @@ export function markMove(latestMove, currentTurn) {
 //----------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------
 let grids = [];
-document.getElementById('start-game').addEventListener('click', () => {
+document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         grids = document.querySelectorAll('.grid');
         console.log(grids);
-    }, 3000);
+    }, 10000);
 })
 
 
