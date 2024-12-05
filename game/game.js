@@ -26,6 +26,11 @@ grids.forEach(grid => {
     })
 });
 
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+
+
 function playTurn(gridIndex, cellIndex) {
     const currentGrid = document.querySelector(`.grid[data-grid="${gridIndex}"]`);
     const currentCell = currentGrid.querySelector(`.cell[data-cell="${cellIndex}"]`);
@@ -116,7 +121,6 @@ function checkWin() {
         }
     }
 }
-
 
 //DISPLAY
 function createXAnimation() {

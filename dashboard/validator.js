@@ -67,7 +67,7 @@ export async function createRoom(code, userID) {
         createdAt: serverTimestamp(),
     })
 
-    //redirect to room with ID
+    redirectToRoom(code);
 }
 
 export async function enterRoom(code, userID) {
@@ -96,7 +96,7 @@ export async function enterRoom(code, userID) {
                 status: 'ready' // Mark the room as ready since the guest joined
             });
             alert(`You have successfully joined the room: ${code}`);
-            //Redirect to room
+            redirectToRoom(code);
 
         } else if (roomData.status === 'ready' || roomData.status === 'active') {
             //game already started or 2 players in room
@@ -109,4 +109,8 @@ export async function enterRoom(code, userID) {
         console.error("Error entering room:", error);
         alert("An error occurred while trying to enter the room. Please try again.");
     }
+}
+
+function redirectToRoom(code){
+    window.location.href = `/game/room.html?roomCode=${code}`;
 }
