@@ -23,7 +23,7 @@ h1{
     text-align: center;
 }
 
-#players{
+#players {
     margin: 0 auto;
     margin-top: 30px;
     margin-left: 4rem;
@@ -33,14 +33,32 @@ h1{
     border: 5px solid #e40c86;
     padding: 20px 0;
 }
-.user{
-    margin-left: 5rem;
-    margin-bottom: 10px;
-    color: rgb(231, 255, 47);
+
+.user {
+    display: flex; /* Make the list item a flex container */
+    justify-content: space-between; /* Spread child elements evenly */
+    align-items: center; /* Center-align items vertically */
+    padding: 10px; /* Add padding for better spacing */
+    background-color: transparent; /* Default background */
+    transition: background-color 0.3s ease;
+    color: rgb(231, 255, 47); /* Text color */
 }
-.username{
-    margin-left: 5rem;
+
+#own-username {
+    background-color: #f29131; /* Highlight the current user */
+    color: white; /* Optional: Make the text more visible */
 }
-.rating{
-    margin-left: 8rem;
+#own-username:hover{
+    background-color: #bc5e00;
+}
+
+.username, .rating {
+    flex: 1; /* Allow the child elements to take up equal space */
+    text-align: center; /* Center text within their flex spaces */
+}
+
+/* Optional: Add hover effect for better UX */
+.user:hover {
+    background-color: rgba(228, 12, 134, 0.8);
+    cursor: pointer;
 }
