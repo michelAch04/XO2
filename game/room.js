@@ -1,5 +1,6 @@
 import { getFirestore,  doc, getDoc, setDoc, onSnapshot, updateDoc} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import {measureVerdict, disableBoard, enableBoard, markMove, playTurn} from './game.js'
 
 //-----------------------Authentication--------------------
 const auth = getAuth();
@@ -223,7 +224,7 @@ async function startGame(gameRef){
             else{
                 //disable board -- game.js -- done
                 disableBoard();
-                
+
                 //receive move made by other player from db
                 const latestMove = gameData.latestMove;
                 markMove(latestMove, curTurn);
