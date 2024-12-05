@@ -184,23 +184,27 @@ function buildBoard(){
                 <button class="cell" data-cell="8"></button>
         `;
         grid.classList.add('active');
-        grid.querySelectorAll('.cell').forEach(cell => {
-            cell.addEventListener("click", () => 
-                playTurn(grid.dataset.grid, cell.dataset.cell)
-            );
-        });
     });
 }
 
 async function startGame(gameRef){
+    let gameData = gameRef.data();
+
+    const board = document.getElementById('gameBoard');
+    board.querySelectorAll('div.grid').forEach(grid=>{
+        grid.querySelectorAll('button').forEach(cell=>{
+            cell.addEventListener("click", async () => {
+                const currentMove = `${grid.dataset.grid}-${cell.dataset.cell}`;
+                await updateDoc(gameRef, {
+                    latestMove: currentMove,
+                })
+            });
+        })
+    })
 
     const playerX = gameData.playerX;
     const playerO = gameData.playerO;
 
-    const board = document.getElementById('gameBoard');
-    board
-
-    let gameData = gameRef.data();
     const unsubscribe = onSnapshot(gameRef, (gameSnap)=>{
         if(gameSnap.exists()){
             gameData = gameSnap.data();
@@ -208,36 +212,14 @@ async function startGame(gameRef){
             const thisPlayer = (auth.currentUser.uid === playerX);
 
             if(curTurn===thisPlayer){
-                //enable inputs -- playTurn
-                //record inputs
+                //enable inputs -- game.js
+                //record inputs -- done
             }
             else{
-                //disable inputs
+                //disable inputs -- game.js
                 //receive move made by other player from db
-                //mark move in board
-
-            }
-            
-
-            const latestMove = gameData.latestMove;
-            if(currentTurn){
-                //Player X turn
-                    //game.js: Disable inputs for player O
-                    //game.js: Record input from player X
-                    //game.js: Display input for X and O
-                    //game.js: Check for win
-                    //game.js: Check for victory
-                    //game.js: Send verdict to room
-                    //room.js: Receive verdict from game.js
-                    //room.js: Analyze verdict, compute next turn, send to db
-                    
-            }
-            else{
-                //Player O turn
-                    //Disable inputs for player X
-                    //Record input for player O
-                    //check for win
-                    //check for victory
+                const latestMove = gameData.latestMove;
+                //mark move in board -- game.js
             }
         }
     })
