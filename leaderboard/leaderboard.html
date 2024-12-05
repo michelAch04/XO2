@@ -4,13 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/dashboard/dashboard.css">
+    <title>Leaderboard</title>
     <link rel="stylesheet" href="/global.css">
+    <link rel="stylesheet" href="leaderboard.css">
+    <link rel="stylesheet" href="/dashboard/dashboard.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
     <script type="module" src="/index.js" defer></script>
+    <script type="module" src="leaderboard.js" defer></script>
     <script src="https://kit.fontawesome.com/68b6469b9d.js" crossorigin="anonymous"></script>
 </head>
 
@@ -29,6 +31,11 @@
                         <i class="fa-solid fa-chart-simple"></i>
                     </a>
                 </div>
+                <div class="help-icon" id="helpIcon">
+                    <a href="/index.html" target="_blank">
+                        <i class="fa-sharp fa-regular fa-circle-question"></i>
+                    </a>
+                </div>
                 <div class="settings-icon" id="settingsIcon">
                     <i class="fa-solid fa-gear"></i>
                 </div>
@@ -37,8 +44,63 @@
                 </div>
             </div>
         </div>
-        <div id="leaderboard">
 
+        <div class="modal" id="profileModal">
+            <div class="modal-content">
+                <span class="close" id="closeProfileModal">&times;</span>
+                <h2>Profile</h2>
+                <div class="form-group">
+                    <label for="username">Username: </label>
+                    <input type="text" id="username" name="username" disabled pattern="^[A-Za-z\d]{4,25}$">
+                    <button type="button" id="editUsername" class="edit">✎</button>
+                </div>
+                <div class="form-group">
+                    <label for="initials">Initials: </label>
+                    <input type="text" id="initials" name="initials" disabled pattern="/^[A-Za-z]{2}$/"
+                        style="width: 20%;">
+                    <button type="button" id="editInitials" class="edit">✎</button>
+                </div>
+                <div class="btn-container">
+                    <button id="saveProfile">Save</button>
+                    <button class="close-modal" id="closeProfile">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="settingsModal">
+            <div class="modal-content">
+                <span class="close" id="closeSettingsModal">&times;</span>
+                <h2>Settings</h2>
+                <p>Want to reset your password? <a href="/login/forgotpass.html" target="_blank">Click here</a></p>
+                <p>If you need any help on privacy settings, make sure to <a href="mailto:user327564@gmail.com">contact
+                        us</a>!</p>
+                <div class="btn-container">
+                    <button id="saveSettings">Save</button>
+                    <button class="close-modal" id="closeSettings">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="logoutModal">
+            <div class="modal-content">
+                <span class="close" id="closeLogoutModal">&times;</span>
+                <h2>Logout</h2>
+                <p>Are you sure you want to logout?</p>
+                <div class="btn-container">
+                    <button id="acceptLogout">Logout</button>
+                    <button class="close-modal" id="closeLogout">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        
+        <div id="leaderboard">
+            <h1>OVERALL LEADERBOARD</h1>
+            <div id="loadingScreen" class="loading-screen">
+                <p>Loading leaderboard...</p>
+            </div>
+            <ol id="players">
+            </ol>
         </div>
     </main>
 </body>

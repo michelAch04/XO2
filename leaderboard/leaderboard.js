@@ -1,177 +1,9 @@
-import { validateCode, createRoom, enterRoom } from './validator.js';
 import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-
-const messageDisplayContainer = document.getElementById('message-display');
-const submittedCode = ['', '', '', '', '', '', ''];
-
-document.getElementById('generate-code-btn').addEventListener('click', () => {
-    setTimeout(() => {
-        generateCode();
-    }, 1000);
-});
-document.getElementById('submit-code-btn').addEventListener('click', () => {
-    setTimeout(() => {
-        submitCode();
-    }, 1000);
-});
-
-document.querySelectorAll('.digit-input').forEach((input, index, inputs) => {
-    const nextDigit = (index === 5) ? '' : `digit-${index + 2}`;
-    input.addEventListener('input', () => moveToNext(input, nextDigit));
-
-    input.addEventListener('keydown', e => {
-        //backspace moves back one digit
-        if (e.key === 'Backspace' && input.value === '') {
-            const previousInput = inputs[index - 1];
-            if (previousInput) {
-                previousInput.focus();
-            }
-        }
-        //enter sends code for submission
-        if (e.key === 'Enter') {
-            //checks if code is of the correct format
-            const isValidCode = validateSubmittedCodeFormat();
-
-            if (isValidCode) {
-                document.getElementById('error-container').textContent = '';
-                document.getElementById('submit-code-btn').style.setProperty('display', 'block');
-                document.getElementById('submit-code-btn').textContent = `Submit : ${submittedCode.join("")}`;
-            }
-        }
-    });
-})
-
-//-------------------------EVENT LISTENER FUNCTIONS----------------------------------//
-
-//will check if the user is entering exactly 6 characters made of letters and numbers
-function validateSubmittedCodeFormat() {
-    let codeIsValid = false;
-
-    document.querySelectorAll('.digit-input').forEach((digit, index) => {
-        const character = digit.value;
-        if (character.length === 1 && /^[A-Z0-9]$/.test(character)) {
-            submittedCode[index] = character;
-            codeIsValid = true;
-        }
-        else {
-            document.getElementById('error-container').textContent = 'Please Enter a Complete Game Code';
-            document.getElementById('submit-code-btn').style.setProperty('display', 'none');
-            codeIsValid = false;
-        }
-    });
-
-    return codeIsValid;
-}
-
-async function generateCode() { //for creating a code
-    let validCodeEntered = false;
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Allowed characters
-    let code = '';
-
-    while (!validCodeEntered) {
-        for (let i = 0; i < 6; i++) {
-            const randomIndex = Math.floor(Math.random() * characters.length);
-            code += characters[randomIndex]; //generate random 6 digit code
-        }
-
-        validCodeEntered = await validateCode(0, code);
-    }
-
-    messageDisplayContainer.textContent = validCodeEntered.message;
-    const createRoomBtn = document.getElementById('create-room-btn');
-
-    //adjust styling if error or valid
-    if (validCodeEntered.isValid === false) {
-        alert(createRoomBtn);
-        createRoomBtn.style.display = "none";
-        messageDisplayContainer.style.color = "red";
-        messageDisplayContainer.style.fontSize = "18px";
-    }
-    else {
-        createRoomBtn.style.display = "block";
-        messageDisplayContainer.style.color = "var(--blue-0)";
-        messageDisplayContainer.style.fontSize = "14px";
-    }
-    enableRoomNavigator(0, code); //create new room with generated code
-}
-
-async function submitCode() {
-    let validCodeEntered = false;
-
-    validCodeEntered = await validateCode(1, submittedCode.join(""));
-    const enterRoomBtn = document.getElementById('enter-room-btn');
-
-    //adjust styling if error or valid
-    if (validCodeEntered.isValid === false) {
-        enterRoomBtn.style.display = "none";
-        messageDisplayContainer.style.color = "red";
-        messageDisplayContainer.style.fontSize = "18px";
-    }
-    else {
-        enterRoomBtn.style.display = "block";
-        messageDisplayContainer.style.color = "var(--blue-0)";
-        messageDisplayContainer.style.fontSize = "14px";
-    }
-
-    //window.alert(`dashboard.js says code is ${validCodeEntered.message}.`)
-
-    //if code valid display
-    if (validCodeEntered.isValid) {
-        messageDisplayContainer.classList.remove('error');
-        messageDisplayContainer.classList.add('code');
-    }
-    //else display error
-    else {
-        messageDisplayContainer.classList.remove('code');
-        messageDisplayContainer.classList.add('error');
-    }
-    messageDisplayContainer.textContent = validCodeEntered.message;
-    enableRoomNavigator(1, submittedCode); //enter existing room with submitted code
-}
-
-//so that the code input moves digits on its own
-function moveToNext(current, nextId) {
-    current.value = current.value.toUpperCase();
-    if (current.value.length === current.maxLength) {
-        const nextInput = document.getElementById(nextId);
-        if (nextInput) {
-            nextInput.focus();
-        }
-    }
-}
-
-//-----------------------------------------------------------------------------------//
-
-function enableRoomNavigator(mode, code) { //navigation
-    const roomNavigator = document.querySelector('section.room-navigator');
-    const createRoomBtn = document.getElementById('create-room-btn');
-    const enterRoomBtn = document.getElementById('enter-room-btn');
-
-    //clones to remove previous event listeners
-    const createRoomBtnClone = createRoomBtn.cloneNode(true);
-    const enterRoomBtnClone = enterRoomBtn.cloneNode(true);
-
-    // Replace originals with clones
-    createRoomBtn.replaceWith(createRoomBtnClone);
-    enterRoomBtn.replaceWith(enterRoomBtnClone);
-
-    //we are creating a room from a generated code
-    if (mode === 0) {
-        enterRoomBtnClone.style.setProperty('display', 'none');
-        createRoomBtnClone.style.setProperty('display', 'block');
-        createRoomBtnClone.addEventListener('click', () => createRoom(code, auth.currentUser.uid));
-    }
-    //we are entering an existing room
-    else if (mode === 1) {
-        createRoomBtnClone.style.setProperty('display', 'none');
-        enterRoomBtnClone.style.setProperty('display', 'block');
-        enterRoomBtnClone.addEventListener('click', () => enterRoom(code.join(""), auth.currentUser.uid));
-    }
-    roomNavigator.style.setProperty('display', 'flex');
-}
+import { getFirestore, doc, setDoc, collection, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 //----------------------------------------EXPIRED LOGIN-----------------------------------------
 const auth = getAuth();
+const db = getFirestore();
 let logoutTimer;
 
 // Check if the user is authenticated
@@ -371,5 +203,61 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+//--------------------------------------------DYNAMIC LEADERBOARD-------------------
+async function getAllUsernamesAndRatings() {
+    const usersCollection = collection(db, "Users");
+    
+    try {
+        const querySnapshot = await getDocs(usersCollection);
+        const userData = [];
+
+        querySnapshot.forEach((doc) => {
+            const { username, rating } = doc.data();
+            if (username && rating !== undefined) { // Ensure both fields exist
+                userData.push({ username, rating });
+            }
+        });
+
+        console.log("Usernames and Ratings:", userData);
+        return userData;
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        throw error;
+    }
+}
+
+async function loadLeaderboard() {
+    const userListContainer = document.getElementById('players');
+    const loadingScreen = document.getElementById('loadingScreen');
+
+    try {
+        // Fetch leaderboard data
+        const users = await getAllUsernamesAndRatings();
+
+        // Sort users by rating in descending order
+        users.sort((a, b) => b.rating - a.rating);
+
+        // Populate the ordered list
+        users.forEach((user) => {
+            const listItem = document.createElement('li');
+            listItem.classList.add("user");
+            listItem.innerHTML = `<span class="username">${user.username}</span>
+            <span class="rating">${user.rating}</span>`;
+            userListContainer.appendChild(listItem);
+        });
+
+        // Hide the loading screen and display the leaderboard
+        loadingScreen.style.display = 'none';
+        userListContainer.style.display = 'block';
+    } catch (error) {
+        console.error("Error loading leaderboard:", error);
+        userListContainer.innerHTML = '<li>Error loading leaderboard.</li>';
+    }
+}
+
+// Call the function on page load
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadLeaderboard();
+});
 
 
