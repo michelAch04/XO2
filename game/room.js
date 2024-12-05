@@ -1,6 +1,6 @@
 import { getFirestore,  doc, getDoc, setDoc, onSnapshot, updateDoc} from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import {measureVerdict, disableBoard, enableBoard, markMove, playTurn} from './game.js'
+import { disableBoard, enableBoard, markMove, playTurn } from './game.js'
 
 //-----------------------Authentication--------------------
 const auth = getAuth();
@@ -190,8 +190,8 @@ function buildBoard(){
 
 async function startGame(gameRef){
     const board = document.getElementById('gameBoard');
-    board.querySelectorAll('div.grid').forEach(grid=>{
-        grid.querySelectorAll('button').forEach(cell=>{
+    board.querySelectorAll('.grid').forEach(grid=>{
+        grid.querySelectorAll('.cell').forEach(cell=>{
             cell.addEventListener("click", async () => {
                 const currentMove = `${grid.dataset.grid}-${cell.dataset.cell}`;
                 await updateDoc(gameRef, {
@@ -201,6 +201,7 @@ async function startGame(gameRef){
                 const gameData = (await getDoc(gameRef)).data();
                 const currentTurn = gameData.currentTurn;
                 //play turn -- game.js -- done
+                alert(cell.dataset.cell);
                 const verdict = playTurn(grid.dataset.grid, cell.dataset.cell, currentTurn);
                 await measureVerdict(verdict);
             });
@@ -217,8 +218,8 @@ async function startGame(gameRef){
 
             if(curTurn===thisPlayer){
                 //enable board -- game.js -- done
+                alert('enabling..');
                 enableBoard();
-
                 //record inputs and get verdict -- done with event listeners
             }
             else{
@@ -238,5 +239,6 @@ async function measureVerdict(verdict){
         await updateDoc(roomRef, {
             status: 'game-end'
         })
+        alert(verdict, 'wins');
     }
 }

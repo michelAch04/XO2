@@ -1,15 +1,23 @@
-export function markMove(latestMove, currentTurn){
+export function markMove(latestMove, currentTurn) {
     const [currentGridIndex, currentCellIndex] = latestMove.split('-');  // Split the string into two parts
     const currentGrid = document.querySelector(`.grid[data-grid="${currentGridIndex}"]`);
-    const currentCell = currentGrid.querySelector(`.cell[data-cell="${currentCellIndex}"]`);
-    const sign = currentTurn === true ? 'X' : 'O';
-
-    currentCell.innerHTML = sign;
+    if (currentGrid) {
+        const currentCell = currentGrid.querySelector(`.cell[data-cell="${currentCellIndex}"]`);
+        const sign = currentTurn === true ? 'X' : 'O';
+        currentCell.innerHTML = sign;
+    }
 }
 //----------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------
-const grids = document.querySelectorAll('.grid');
+let grids = [];
+document.getElementById('start-game').addEventListener('click', () => {
+    setTimeout(() => {
+        grids = document.querySelectorAll('.grid');
+        console.log(grids);
+    }, 3000);
+})
+
 
 export function playTurn(gridIndex, cellIndex, currentTurn) {
     const currentGrid = document.querySelector(`.grid[data-grid="${gridIndex}"]`);
@@ -27,10 +35,12 @@ export function playTurn(gridIndex, cellIndex, currentTurn) {
 
     const nextGrid = document.querySelector(`.grid[data-grid="${cellIndex}"`);
     if (nextGrid && nextGrid.classList.contains('incomplete')) {
+        console.log(grids.length);
         grids.forEach(grid => {
             grid.classList.remove('active');
         });
         nextGrid.classList.add('active'); // Activate the target grid
+        console.log(nextGrid.dataset.grid);
     } else {
         // If target grid is complete, allow play on any incomplete grid
         grids.forEach(grid => {
@@ -60,6 +70,7 @@ function checkGridCompletion(gridIndex) {
             currentGrid.classList.remove('incomplete');
             currentGrid.classList.add('complete');
             displayGridCompletion(currentGrid, signs[a]); // Pass the winning sign
+            currentGrid.classList.add(`${signs[a].toLowerCase()}-win`)
             return;
         }
     }
@@ -146,12 +157,6 @@ function displayGridCompletion(currentGrid, winnerSign) {
     // Add an overlay div for the drawing animation
     const overlay = document.createElement('div');
     overlay.classList.add('winner-draw');
-    if (winnerSign === 'X') {
-        currentGrid.classList.add('x-win');
-    }
-    else {
-        currentGrid.classList.add('o-win');
-    }
     overlay.innerHTML = winnerSign === 'X' ? createXAnimation() : createOAnimation();
 
     // Append the overlay to the grid
@@ -211,9 +216,3 @@ export function enableBoard() {
         })
     })
 }
-
-
-
-
-
-
