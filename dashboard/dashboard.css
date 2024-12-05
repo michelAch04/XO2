@@ -80,11 +80,6 @@ section.room-navigator *{
     margin: 10px;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-}
-
 .left-navbar {
     position: fixed;
     top: 0;
@@ -101,9 +96,11 @@ body {
 
 .navbar-icons {
     display: flex;
+    justify-content: space-between;
     flex-direction: column;
     gap: 5px;
     align-items: center;
+    height: 95%;
 }
 
 .profile-icon {
@@ -124,6 +121,7 @@ body {
     border: 2px solid rgba(255, 255, 255, 0.7);
     padding: 0 !important;
     cursor: pointer;
+    margin-bottom: auto;
   }
 
 .navbar-icons i{

@@ -1,0 +1,46 @@
+h1{
+    margin: 0;
+    margin-left: 4rem;
+    font-size: 3rem;
+}
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    z-index: 9999; /* Make sure it overlays other content */
+}
+.leaderboard {
+    display: none; /* Initially hidden until leaderboard loads */
+    text-align: center;
+}
+
+#players{
+    margin: 0 auto;
+    margin-top: 30px;
+    margin-left: 4rem;
+    padding: 0;
+    font-size: 1.5rem;
+    text-align: center;
+    border: 5px solid #e40c86;
+    padding: 20px 0;
+}
+.user{
+    margin-left: 5rem;
+    margin-bottom: 10px;
+    color: rgb(231, 255, 47);
+}
+.username{
+    margin-left: 5rem;
+}
+.rating{
+    margin-left: 8rem;
+}
