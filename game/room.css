@@ -1,0 +1,17 @@
+body{
+    margin: 20px;
+    padding: 10px;
+}
+
+*{
+    margin-right: auto;
+    margin-left: auto;
+}
+
+h1{
+    color: var(--blue-0);
+}
+
+button#start-game{
+    display: none;
+}
