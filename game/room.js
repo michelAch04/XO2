@@ -87,9 +87,9 @@ async function loadRoom(){
                 if(roomData.host && roomData.guest){
                     startGameBtn.style.setProperty('display', 'block');
                     startGameBtn.addEventListener('click', async ()=>{
-                        await setUpGame();    
+                        const gameRef = await setUpGame();    
                         unsubscribeLoad();                                       
-                        startGame();
+                        startGame(gameRef);
                     });
                 }
                 else{
@@ -128,8 +128,10 @@ async function setUpGame(){
         await setDoc(newGameRef, {
             playerO: roomData.host,
             playerX: roomData.guest,
-            gameState: true,
+            gameState: true, //true-> turn X || false-> turn o
+            gameEnded: false,
             latestMove: '',
+            currentTurn: 0,
             room: roomRef
         });
 
@@ -139,6 +141,7 @@ async function setUpGame(){
             currentGame:  newGameRef,
         });
         buildBoard();
+        return newGameRef;
     }
     else if(auth.currentUser.uid===roomData.guest){
         const unsubscribe = onSnapshot(roomRef, async (roomSnap)=>{
@@ -189,10 +192,59 @@ function buildBoard(){
     });
 }
 
-async function startGame(){
+async function startGame(gameRef){
+
+    const playerX = gameData.playerX;
+    const playerO = gameData.playerO;
+
+    const board = document.getElementById('gameBoard');
+    board
+
+    let gameData = gameRef.data();
     const unsubscribe = onSnapshot(gameRef, (gameSnap)=>{
         if(gameSnap.exists()){
             gameData = gameSnap.data();
+            const curTurn = gameData.gameState;
+            const thisPlayer = (auth.currentUser.uid === playerX);
+
+            if(curTurn===thisPlayer){
+                //enable inputs -- playTurn
+                //record inputs
+            }
+            else{
+                //disable inputs
+                //receive move made by other player from db
+                //mark move in board
+
+            }
+            
+
+            const latestMove = gameData.latestMove;
+            if(currentTurn){
+                //Player X turn
+                    //game.js: Disable inputs for player O
+                    //game.js: Record input from player X
+                    //game.js: Display input for X and O
+                    //game.js: Check for win
+                    //game.js: Check for victory
+                    //game.js: Send verdict to room
+                    //room.js: Receive verdict from game.js
+                    //room.js: Analyze verdict, compute next turn, send to db
+                    
+            }
+            else{
+                //Player O turn
+                    //Disable inputs for player X
+                    //Record input for player O
+                    //check for win
+                    //check for victory
+            }
         }
     })
+
+    
+    //true->X || false->O
+    while(!gameData.gameEnded){
+
+    }
 }
