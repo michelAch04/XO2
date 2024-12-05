@@ -45,7 +45,7 @@ submit.addEventListener("click", async function (event) {
           .then((userCredential) => {
             const user = userCredential.user;
             console.log(persistence);
-            window.location.href = "/dashboard/dashboard.html";
+            window.location.href = "/public/dashboard/dashboard.html";
           })
           .catch((error) => {
             const errorCode = error.code;

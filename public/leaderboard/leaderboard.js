@@ -25,7 +25,7 @@ function checkAuthStatus() {
             }
         } else {
             alert("Session expired. Please log in again.");
-            window.location.href = "/login/login.html";
+            window.location.href = "/public/login/login.html";
         }
     });
 }
@@ -51,7 +51,7 @@ function resetLogoutTimer() {
     logoutTimer = setTimeout(() => {
         alert("You have been logged out due to inactivity.");
         signOut(auth).then(() => {
-            window.location.href = "/login/login.html";
+            window.location.href = "/public/login/login.html";
         }).catch(console.error);
     }, 20 * 60 * 1000); // 20 minutes
 }
@@ -64,7 +64,7 @@ function logout() {
         .then(() => {
             localStorage.clear(); // Clear all locally stored data
             sessionStorage.clear(); // Clear session storage
-            window.location.href = "/login/login.html";
+            window.location.href = "/public/login/login.html";
         })
         .catch((error) => {
             // Handle errors during sign-out
