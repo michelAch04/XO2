@@ -14,19 +14,21 @@
 
     <link href="/public/styles.css" rel="stylesheet">
 </head>
-<body>
-    <div class="login-container">
+<body style="align-items: center; height: 100vh;">
+    <div class="login-container form-container">
         <h2>Login</h2>
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="username" id="username" name="username" placeholder="Username" required>
+                <input type="username" id="username" name="username" class="form-input"
+                 placeholder="Username" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Password" required>
+                <input type="password" id="password" name="password" class="form-input"
+                placeholder="Password" required>
             </div>
             <p id="message" class="error-message"></p>
-            <button id="submit-button" type="button">Login</button>
+            <button class="submit-form" id="submit-button" type="button">Login</button>
             <div id="sub-login">
                 <label for="remember-me" id="remember-label">
                     <input type="checkbox" id="remember-me" /><span>Remember Me</span>

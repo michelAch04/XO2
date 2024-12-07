@@ -46,49 +46,51 @@
         </div>
 
         <div class="modal" id="profileModal">
-            <div class="modal-content">
+            <div class="modal-content form-container">
                 <span class="close" id="closeProfileModal">&times;</span>
                 <h2>Profile</h2>
                 <div class="form-group">
                     <label for="username">Username: </label>
-                    <input type="text" id="username" name="username" disabled pattern="^[A-Za-z\d]{4,25}$">
-                    <button type="button" id="editUsername" class="edit">✎</button>
+                    <input type="text" id="username" name="username" class="form-input" disabled>
+                    <button type="button" id="editUsername" class="submit-form edit">✎</button>
                 </div>
+                <p id="username-message" class="error-message"></p>
                 <div class="form-group">
                     <label for="initials">Initials: </label>
-                    <input type="text" id="initials" name="initials" disabled pattern="/^[A-Za-z]{2}$/"
-                        style="width: 20%;">
-                    <button type="button" id="editInitials" class="edit">✎</button>
+                    <input type="text" id="initials" name="initials" class="form-input" disabled style="width: 20%;">
+                    <button type="button" id="editInitials" class="submit-form edit">✎</button>
                 </div>
+                <p id="initials-message" class="error-message"></p>
+                <p id="output-message"></p>
                 <div class="btn-container">
-                    <button id="saveProfile">Save</button>
-                    <button class="close-modal" id="closeProfile">Cancel</button>
+                    <button class="submit-form" id="saveProfile">Save</button>
+                    <button class="submit-form close-modal" id="closeProfile">Cancel</button>
                 </div>
             </div>
         </div>
 
         <div class="modal" id="settingsModal">
-            <div class="modal-content">
+            <div class="modal-content form-container">
                 <span class="close" id="closeSettingsModal">&times;</span>
                 <h2>Settings</h2>
                 <p>Want to reset your password? <a href="/public/login/forgotpass.html" target="_blank">Click here</a></p>
                 <p>If you need any help on privacy settings, make sure to <a href="mailto:user327564@gmail.com">contact
                         us</a>!</p>
                 <div class="btn-container">
-                    <button id="saveSettings">Save</button>
-                    <button class="close-modal" id="closeSettings">Cancel</button>
+                    <button class="submit-form" id="saveSettings">Save</button>
+                    <button class="submit-form close-modal" id="closeSettings">Cancel</button>
                 </div>
             </div>
         </div>
 
         <div class="modal" id="logoutModal">
-            <div class="modal-content">
+            <div class="modal-content form-container">
                 <span class="close" id="closeLogoutModal">&times;</span>
                 <h2>Logout</h2>
                 <p>Are you sure you want to logout?</p>
                 <div class="btn-container">
-                    <button id="acceptLogout">Logout</button>
-                    <button class="close-modal" id="closeLogout">Cancel</button>
+                    <button class="submit-form" id="acceptLogout">Logout</button>
+                    <button class="submit-form close-modal" id="closeLogout">Cancel</button>
                 </div>
             </div>
         </div>

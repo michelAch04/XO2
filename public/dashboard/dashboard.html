@@ -4,16 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="dashboard.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/public/global.css">
+    <link rel="stylesheet" href="dashboard.css">
 
     <script type="module" src="/public/index.js" defer></script>
     <script src="https://kit.fontawesome.com/68b6469b9d.js" crossorigin="anonymous"></script>
     <script type="module" src="/public/dashboard/dashboard.js" defer></script> 
+    <script type="module" src="/public/friendlist.js" defer></script>
 
     <title>Game Navigator</title>
 </head>
@@ -28,6 +29,10 @@
                     <a href="/public/dashboard/dashboard.html">
                         <i class="fa-solid fa-house"></i>
                     </a>
+                </div>
+                <div class="friends-icon" id="friendsIcon">
+                    <i class="fa-solid fa-user-group"
+                    style="font-size: 20px;"></i>
                 </div>
                 <div class="stats-icon" id="statsIcon">
                     <a href="/public/leaderboard/leaderboard.html">
@@ -49,52 +54,79 @@
         </div>
 
         <div class="modal" id="profileModal">
-            <div class="modal-content">
+            <div class="modal-content form-container">
                 <span class="close" id="closeProfileModal">&times;</span>
                 <h2>Profile</h2>
                 <div class="form-group">
                     <label for="username">Username: </label>
-                    <input type="text" id="username" name="username" disabled pattern="^[A-Za-z\d]{4,25}$">
-                    <button type="button" id="editUsername" class="edit">✎</button>
+                    <input type="text" id="username" name="username" class="form-input" disabled>
+                    <button type="button" id="editUsername" class="submit-form edit">✎</button>
                 </div>
+                <p id="username-message" class="error-message"></p>
                 <div class="form-group">
                     <label for="initials">Initials: </label>
-                    <input type="text" id="initials" name="initials" disabled pattern="/^[A-Za-z]{2}$/"
-                        style="width: 20%;">
-                    <button type="button" id="editInitials" class="edit">✎</button>
+                    <input type="text" id="initials" name="initials" class="form-input" disabled style="width: 20%;">
+                    <button type="button" id="editInitials" class="submit-form edit">✎</button>
                 </div>
+                <p id="initials-message" class="error-message"></p>
+                <p id="output-message"></p>
                 <div class="btn-container">
-                    <button id="saveProfile">Save</button>
-                    <button class="close-modal" id="closeProfile">Cancel</button>
+                    <button class="submit-form" id="saveProfile">Save</button>
+                    <button class="submit-form close-modal" id="closeProfile">Cancel</button>
                 </div>
             </div>
         </div>
 
         <div class="modal" id="settingsModal">
-            <div class="modal-content">
+            <div class="modal-content form-container">
                 <span class="close" id="closeSettingsModal">&times;</span>
                 <h2>Settings</h2>
                 <p>Want to reset your password? <a href="/public/login/forgotpass.html" target="_blank">Click here</a></p>
                 <p>If you need any help on privacy settings, make sure to <a href="mailto:user327564@gmail.com">contact
                         us</a>!</p>
                 <div class="btn-container">
-                    <button id="saveSettings">Save</button>
-                    <button class="close-modal" id="closeSettings">Cancel</button>
+                    <button class="submit-form" id="saveSettings">Save</button>
+                    <button class="submit-form close-modal" id="closeSettings">Cancel</button>
                 </div>
             </div>
         </div>
 
         <div class="modal" id="logoutModal">
-            <div class="modal-content">
+            <div class="modal-content form-container">
                 <span class="close" id="closeLogoutModal">&times;</span>
                 <h2>Logout</h2>
                 <p>Are you sure you want to logout?</p>
                 <div class="btn-container">
-                    <button id="acceptLogout">Logout</button>
-                    <button class="close-modal" id="closeLogout">Cancel</button>
+                    <button class="submit-form" id="acceptLogout">Logout</button>
+                    <button class="submit-form close-modal" id="closeLogout">Cancel</button>
                 </div>
             </div>
         </div>
+
+        <div class="modal" id="friendsModal">
+            <div class="modal-content form-container" id="friendsModalContent">
+                <span class="close" id="closeFriendsModal">&times;</span>
+                <h2>Friends</h2>
+                <div class="tab-container">
+                    <button id="friendsTab" class="tab active">Friendlist</button>
+                    <button id="addFriendsTab" class="tab">Add Friends</button>
+                </div>
+                <div class="tab-content-container">
+                    <div class="tab-content" id="friendsList" style="display: block;">
+                        <!-- Current friends will be listed here -->
+                        <ul id="friendsListContainer"></ul>
+                    </div>
+                    <div class="tab-content" id="addFriends" style="display: none;">
+                        <input type="text" id="searchFriend" class="form-input"
+                        placeholder="Search username">
+                        <button id="searchFriendBtn" class="submit-form"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        <div id="searchResults"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
 
         <div class="create-new-game">
             <h1>Create New Game</h1>

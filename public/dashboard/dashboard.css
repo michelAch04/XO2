@@ -1,23 +1,30 @@
-body{
+body {
     margin: 20px;
     padding: 10px;
     color: var(--blue-0);
     height: 100vh !important;
 }
 
-main{
+main {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 }
 
-main div, main form{
+main div,
+main form {
     margin: 10px;
     padding: 10px;
 }
 
-#generate-code-btn, #submit-code-btn{
+button{
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+#generate-code-btn,
+#submit-code-btn {
     background-color: var(--orange-0);
     border: none;
     padding: 5px;
@@ -25,26 +32,41 @@ main div, main form{
     font-weight: bold;
 }
 
-#submit-code-btn{
+#generate-code-btn:hover,
+#submit-code-btn:hover {
+    background-color: #d67009;
+}
+
+#submit-code-btn {
     display: none;
 }
 
-.enter-game, .create-new-game{
+#create-room-btn, #enter-room-btn{
+    background-color: var(--green-0);
+    border: none;
+}
+#create-room-btn:hover, #enter-room-btn:hover{
+    background-color: #b3c719;
+}
+
+.enter-game,
+.create-new-game {
     border: 5px solid var(--pink-0);
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.create-new-game{
+
+.create-new-game {
     padding: 30px;
 }
 
-.enter-game .code-input{
+.enter-game .code-input {
     display: flex;
     flex-direction: row;
 
-    input{
+    input {
         height: 50px;
         width: 40px;
 
@@ -61,11 +83,11 @@ main div, main form{
     }
 }
 
-#error-container{
+#error-container {
     color: red;
 }
 
-section.room-navigator{
+section.room-navigator {
     display: none;
     margin: 20px;
     margin-left: 60px !important;
@@ -77,7 +99,7 @@ section.room-navigator{
     justify-content: center;
 }
 
-section.room-navigator *{
+section.room-navigator * {
     margin: 10px;
 }
 
@@ -87,7 +109,7 @@ section.room-navigator *{
     left: 0;
     width: 40px;
     height: 100vh;
-    background: linear-gradient(170deg, rgba(99,11,117,1) 1%, rgba(60, 15, 108, 0.952) 40%, rgb(38, 13, 62) 100%);
+    background: linear-gradient(170deg, rgba(99, 11, 117, 1) 1%, rgba(60, 15, 108, 0.952) 40%, rgb(38, 13, 62) 100%);
     display: flex;
     align-items: end;
     justify-content: center;
@@ -123,9 +145,9 @@ section.room-navigator *{
     padding: 0 !important;
     cursor: pointer;
     margin-bottom: auto;
-  }
+}
 
-.navbar-icons i{
+.navbar-icons i {
     color: white;
     opacity: 0.4;
     font-size: 23px;
@@ -133,47 +155,53 @@ section.room-navigator *{
 }
 
 .modal {
-    display: flex; /* Ensure the modal uses flex layout */
+    display: flex;
+    /* Ensure the modal uses flex layout */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
+    margin: 0;
     color: var(--purple-0);
     align-items: center;
     justify-content: center;
-    opacity: 0; /* Hidden by default */
-    pointer-events: none; /* Prevent interaction when hidden */
+    opacity: 0;
+    /* Hidden by default */
+    pointer-events: none;
+    /* Prevent interaction when hidden */
     transition: opacity 0.3s ease-in-out;
     z-index: 1000;
 }
 
 .modal.show {
-    opacity: 1; /* Fully visible */
-    pointer-events: auto; /* Enable interaction */
+    opacity: 1;
+    /* Fully visible */
+    pointer-events: auto;
+    /* Enable interaction */
 }
 
 .modal-content {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 10px;
     text-align: center;
     width: 80%;
     max-width: 400px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    transform: translateY(-20px); /* Slide-in effect start */
-    transition: transform 0.3s ease-in-out;
 }
 
 .modal.show .modal-content {
-    transform: translateY(0); /* Slide into place */
+    transform: translateY(0);
+    /* Slide into place */
 }
 
-.modal-content h2{
-    border-bottom: 2px solid var(--purple-0);
+.modal-content h2 {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.6);
     width: 40%;
     margin: 0 auto;
+}
+
+.modal-content input {
+    height: 20px;
 }
 
 .close {
@@ -181,7 +209,7 @@ section.room-navigator *{
     top: 10px;
     right: 20px;
     font-size: 1.5rem;
-    color: #333;
+    color: rgba(255, 255, 255, 0.9);
     cursor: pointer;
     transition: color 0.3s ease;
 }
@@ -190,33 +218,187 @@ section.room-navigator *{
     color: var(--pink-0);
 }
 
-button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: var(--orange-0);
-    color: white;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-}
-button:hover {
-    background-color: var(--blue-0);
-}
-
-.btn-container{
+.btn-container {
     display: flex;
     justify-content: space-between;
 }
 
-.edit{
+.edit {
     background: transparent;
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.5);
     font-size: 15px;
     padding: 5px;
 }
 
-.modal a{
+.modal a {
     color: inherit;
 }
 
+.error-message {
+    color: red;
+    margin-top: -3%;
+    font-size: 12px;
+}
+
+#output-message {
+    color: var(--green-0);
+}
+
+/* Modal Styling */
+#friendsModalContent {
+    height: 80vh;
+    overflow-y: auto;
+    width: 80%;
+    margin: auto;
+    margin-top: 25px;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Tab Container */
+.tab-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Tab Buttons */
+.tab {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.7);
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    border-bottom: 2px solid transparent;
+}
+
+.tab:hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.tab.active {
+    color: #fff;
+    background-color: var(--purple-0); /* Your primary color */
+    border-radius: 10px 10px 0 0;
+}
+
+/* Tab Content */
+.tab-content-container {
+    overflow-y: auto;
+    padding: 10px;
+    transition: opacity 0.3s ease-in-out;
+    background-color: var(--purple-0);
+    margin: 0;
+    border-radius: 10px;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+    opacity: 1;
+}
+
+/* Scrollbar Customization */
+.tab-content-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.tab-content-container::-webkit-scrollbar-thumb {
+    background-color: #0078d7;
+    border-radius: 10px;
+}
+
+.tab-content-container::-webkit-scrollbar-track {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+}
+
+/* Tab Content - Fade-In Animation */
+.tab-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeIn 0.2s ease-in-out forwards;
+}
+
+/* Fade-In Animation Keyframes */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#searchFriendBtn{
+    background-color: var(--orange-0);
+    padding: 5px 10px;
+}
+#searchFriendBtn:hover{
+    background-color: var(--pink-0);
+}
+#searchFriend{
+    padding: 3px 5px;
+}
+
+#searchResults{
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.search-result{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 0 !important;
+    margin-top: 0px;
+}
+.search-result:first-of-type{
+    margin-top: 15px;
+}
+
+.search-result button{
+    padding: 5px !important;
+    height: 30px;
+}
+.search-result button:disabled{
+    background-color: var(--pink-0);
+    pointer-events: none;
+}
+
+.request-container{
+    margin: 0;
+    padding: 0;
+    margin-bottom: 10px;
+}
+
+#friendsListContainer{
+    padding-inline-start: 0 !important;
+}
+
+.friend-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+.friend-item button{
+    padding: 5px;
+    height: 30px;
+}

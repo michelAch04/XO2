@@ -62,15 +62,24 @@ submit.addEventListener("click", async function (event) {
       displayName: username,
     });
 
+    const profileInitials = (username[0] + username[1]).toUpperCase();
+
     // Save user info to Firestore
     const userDoc = {
       username: username,
       email: email,
       lastLogin: serverTimestamp(), // Firestore server timestamp
       rating: 100,
+      initials: profileInitials,
     };
 
-    await setDoc(doc(db, "Users", user.uid), userDoc);
+    const userDocRef = doc(db, "Users", user.uid);
+    await setDoc(userDocRef, userDoc);
+
+    // Initialize empty friendList subcollection
+    const friendListRef = collection(db, "Users", user.uid, "friendList");
+    const emptyDocRef = doc(friendListRef, "_placeholder"); // Placeholder document
+    await setDoc(emptyDocRef, { initialized: true }); // Optional metadata for initialization
 
     // Display success message
     const loginContainer = document.querySelector('.login-container');

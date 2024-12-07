@@ -28,7 +28,7 @@ body {
     font-size: 2rem;
 }
 #main-content h2{
-    color: rgb(231, 255, 47);
+    color: var(--green-0);
     font-size: 1.3rem;
     margin: 0;
 }
@@ -56,13 +56,11 @@ body {
 
 /*LOGIN AND REGISTER PAGE STYLING*/
 .login-container {
-    background: white;
-    margin-top: 20px;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     height: fit-content;
-    width: 400px;
+    width: 350px;
     text-align: center;
 }
 
@@ -78,20 +76,18 @@ h2 {
 label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold;
 }
 
 input {
-    width: 100%;
+    width: 96%;
     padding: 8px;
     margin-top: 3px;
-    border: 1px solid #ccc;
     border-radius: 5px;
 }
 
 button {
     width: 100%;
-    margin-top: 5px;
+    margin-top: 20px;
     padding: 10px;
     background-color: #007bff;
     color: white;
@@ -188,16 +184,12 @@ button:hover {
 
 .form-subtitle{
     font-size: 0.7rem;
-    opacity: 0.5;
+    opacity: 0.6;
     margin-left: 1%;
     margin-top: 1.5%;
     margin-bottom: -2.5%;
 }
 
-a{
-    text-decoration: none;
-    color: inherit;
-}
 
 #sub-login {
     display: flex;
@@ -207,6 +199,9 @@ a{
     margin-bottom: 30px;
     font-size: 14px;
   }
+#sub-login a{
+    margin-top: -1.25%;
+}
   
 /* Ensure checkbox and text are aligned horizontally */
 #remember-label {
@@ -218,5 +213,11 @@ a{
   
   #remember-label input {
     margin-right: 5px; /* Space between checkbox and text */
+    color: var(--orange-0);
   }
   
+  #confirmMessage{
+    color: var(--green-0); 
+    text-align: center;
+    margin-top: 25px;
+  }

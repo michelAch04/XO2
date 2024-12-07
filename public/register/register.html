@@ -14,31 +14,36 @@
 
     <title>Register</title>
 </head>
-<body>
-    <div class="login-container" id="login-form">
+<body style="height: fit-content; align-items: center;">
+    <div class="login-container form-container" id="login-form"
+          style="margin: 30px; width: 400px;">
         <h2>Create account</h2>
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" placeholder="Username" required>
+                <input type="text" id="username" name="username" class="form-input"
+                placeholder="Username" required>
                 <p class="form-subtitle">Username must start with a letter, and include letters and numbers only.</p>
                 <p id="username-message" class="error-message"></p>
             </div>
             <div class="form-group">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="Email" required>
+                <input type="email" id="email" name="email" class="form-input"
+                placeholder="Email" required>
                 <p id="email-message" class="error-message"></p>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Password" required>
+                <input type="password" id="password" name="password" class="form-input"
+                placeholder="Password" required>
                 <p class="form-subtitle">Password must be at least 8 characters long with at least one number, uppercase letter, and special character (@, &, #..)</p>
             </div>
             <div class="form-group">
                 <label for="confirm">Confirm Password</label>
-                <input type="password" id="confirm" name="confirm" placeholder="Confirm Password" required>
+                <input type="password" id="confirm" name="confirm" class="form-input"
+                placeholder="Confirm Password" required>
                 <p id="confirm-message" class="error-message"></p>
             </div>
-            <button id="submit-button" type="button">Create account</button>
+            <button id="submit-button" class="submit-form" type="button">Create account</button>
         <p id="message" class="error-message"></p>
         <p>Already have an account? <a href="/public/login/login.html">Log In</a>.</p>
     </div>

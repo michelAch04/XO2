@@ -1,5 +1,6 @@
 import { validateCode, createRoom, enterRoom } from './validator.js';
 import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
+import { getFirestore, collection, query, where, getDocs, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const messageDisplayContainer = document.getElementById('message-display');
 const submittedCode = ['', '', '', '', '', '', ''];
@@ -176,17 +177,25 @@ let logoutTimer;
 
 // Check if the user is authenticated
 function checkAuthStatus() {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
         if (user) {
             console.log("User is logged in:", user.email);
-            const profileIcon = document.getElementById('profileIcon');
-            profileIcon.innerHTML = user.displayName[0].toUpperCase() + user.displayName[1].toUpperCase();
 
             //for profile modal
+
+            const userDocRef = doc(db, "Users", user.uid);
+            const userDoc = await getDoc(userDocRef);
+            const userData = userDoc.data();
+
+            // Update UI
+            const profileIcon = document.getElementById('profileIcon');
+            profileIcon.textContent = userData.initials || user.displayName.slice(0, 2).toUpperCase();
+
             const usernameInput = document.getElementById('username');
             const initialsInput = document.getElementById('initials');
             usernameInput.value = user.displayName;
-            initialsInput.value = user.displayName[0].toUpperCase() + user.displayName[1].toUpperCase();
+            initialsInput.value = userData.initials || user.displayName.slice(0, 2).toUpperCase();
+
             // If the session is non-persistent, set up the inactivity logout timer
             if (!isPersistentLogin(user)) {
                 setupInactivityLogout();
@@ -241,6 +250,8 @@ function logout() {
         });
 }
 
+const db = getFirestore();
+
 // Function to check if username exists in the database
 async function isUsernameTaken(username) {
     const usersRef = collection(db, "Users"); // Adjust collection name based on your structure
@@ -253,39 +264,36 @@ async function isUsernameTaken(username) {
 // Function to change user credentials
 async function changeCredentials(username, initials) {
     const user = auth.currentUser;
+    const userDocRef = doc(db, "Users", user.uid);
 
     if (initials) {
+        await (updateDoc(userDocRef, { initials: initials.toUpperCase() }));
+        console.log('initials updated successfully');
         document.getElementById('profileIcon').innerHTML = initials.toUpperCase();
     }
 
     if (!user) {
         console.error("No authenticated user found.");
-        alert("Please log in to update your credentials.");
-        return;
+        return "Please log in to update your credentials.";
     }
 
     try {
         // Check if username is taken
-        if(username === user.displayName){
-            return;
-        }
         if (username) {
             const usernameExists = await isUsernameTaken(username);
             if (usernameExists) {
-                alert("Username is already taken. Please choose a different one.");
-                return;
+                return "Username is already taken. Please choose a different one.";
             }
-        }
-        // Update display name (username) if provided
-        if (username) {
+            //update username
             await updateProfile(user, { displayName: username });
+            await updateDoc(userDocRef, { username: username });
             console.log("Username updated successfully.");
         }
 
-        alert("Credentials updated successfully.");
+        return 'Credentials updated successfully!';
     } catch (error) {
         console.error("Error updating credentials:", error);
-        alert(`Failed to update credentials: ${error.message}`);
+        return `Failed to update credentials: ${error.message}`;
     }
 }
 
@@ -363,12 +371,47 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('editInitials').addEventListener('click',
         () => initialsInput.removeAttribute('disabled'));
     //save changes
-    document.getElementById('saveProfile').addEventListener('click', () => {
-        changeCredentials(usernameInput.value.trim(), initialsInput.value.trim());
+    document.getElementById('saveProfile').addEventListener('click', async () => {
+        const initialsMessage = document.getElementById('initials-message');
+        const usernameMsg = document.getElementById('username-message');
+        const currentUser = auth.currentUser;
+    
+        // Validation checks
+        if ((/[^a-zA-Z0-9]/.test(usernameInput.value.trim()) || /^[^a-zA-Z]/.test(usernameInput.value.trim()))
+            && usernameInput.value.trim() !== currentUser.displayName) {
+            usernameMsg.textContent = "Username does not match the required format.";
+            initialsMessage.innerHTML = '';
+            return;
+        }
+    
+        if (usernameInput.value.trim().toLowerCase().includes('admin')
+            && usernameInput.value.trim() !== currentUser.displayName) {
+            usernameMsg.textContent = "Username cannot contain 'admin'!";
+            initialsMessage.innerHTML = '';
+            return;
+        }
+    
+        if (initialsInput.value.trim().length !== 2) {
+            initialsMessage.innerHTML = 'Initials should be 2 characters long.';
+            usernameMsg.textContent = '';
+            return;
+        }
+    
+        // Save credentials
+        let outputMsg;
+        if (usernameInput.value.trim() === currentUser.displayName) {
+            outputMsg = await changeCredentials(null, initialsInput.value.trim());
+        } else {
+            outputMsg = await changeCredentials(usernameInput.value.trim(), initialsInput.value.trim());
+        }
+    
+        // Update UI and close modal after 2 seconds
+        document.getElementById('output-message').textContent = outputMsg;
         usernameInput.setAttribute('disabled', 'true');
         initialsInput.setAttribute('disabled', 'true');
-        closeModal(profileModal);
-    });
+    
+        setTimeout(() => closeModal(profileModal), 1000); // Pass a function reference here
+    });    
 });
 
 
