@@ -202,7 +202,7 @@ function checkAuthStatus() {
             }
         } else {
             alert("Session expired. Please log in again.");
-            window.location.href = "/public/login/login.html";
+            window.location.href = "/login/login.html";
         }
     });
 }
@@ -228,7 +228,7 @@ function resetLogoutTimer() {
     logoutTimer = setTimeout(() => {
         alert("You have been logged out due to inactivity.");
         signOut(auth).then(() => {
-            window.location.href = "/public/login/login.html";
+            window.location.href = "/login/login.html";
         }).catch(console.error);
     }, 20 * 60 * 1000); // 20 minutes
 }
@@ -241,7 +241,7 @@ function logout() {
         .then(() => {
             localStorage.clear(); // Clear all locally stored data
             sessionStorage.clear(); // Clear session storage
-            window.location.href = "/public/login/login.html";
+            window.location.href = "/login/login.html";
         })
         .catch((error) => {
             // Handle errors during sign-out
@@ -251,6 +251,8 @@ function logout() {
 }
 
 const db = getFirestore();
+
+//---------------------------------------PROFILE MODAL QUERIES------------------------------
 
 // Function to check if username exists in the database
 async function isUsernameTaken(username) {

@@ -88,7 +88,7 @@ submit.addEventListener("click", async function (event) {
     successMsg.style.display = "flex";
 
     setTimeout(() => {
-      window.location.href = "/public/login/login.html";
+      window.location.href = "/login/login.html";
     }, 3000);
   } catch (error) {
     const errorCode = error.code;

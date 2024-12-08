@@ -1,5 +1,5 @@
 import { getAuth, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js";
-import { getFirestore, doc, setDoc, collection, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 //----------------------------------------EXPIRED LOGIN-----------------------------------------
 const auth = getAuth();
@@ -8,24 +8,32 @@ let logoutTimer;
 
 // Check if the user is authenticated
 function checkAuthStatus() {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
         if (user) {
             console.log("User is logged in:", user.email);
-            const profileIcon = document.getElementById('profileIcon');
-            profileIcon.innerHTML = user.displayName[0].toUpperCase() + user.displayName[1].toUpperCase();
 
             //for profile modal
+
+            const userDocRef = doc(db, "Users", user.uid);
+            const userDoc = await getDoc(userDocRef);
+            const userData = userDoc.data();
+
+            // Update UI
+            const profileIcon = document.getElementById('profileIcon');
+            profileIcon.textContent = userData.initials || user.displayName.slice(0, 2).toUpperCase();
+
             const usernameInput = document.getElementById('username');
             const initialsInput = document.getElementById('initials');
             usernameInput.value = user.displayName;
-            initialsInput.value = user.displayName[0].toUpperCase() + user.displayName[1].toUpperCase();
+            initialsInput.value = userData.initials || user.displayName.slice(0, 2).toUpperCase();
+
             // If the session is non-persistent, set up the inactivity logout timer
             if (!isPersistentLogin(user)) {
                 setupInactivityLogout();
             }
         } else {
             alert("Session expired. Please log in again.");
-            window.location.href = "/public/login/login.html";
+            window.location.href = "/login/login.html";
         }
     });
 }

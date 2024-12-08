@@ -1,6 +1,6 @@
 function loadRules() {
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", "/public/rules/rules.xml", true);
+    xhr.open("GET", "rules/rules.xml", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             displayRules(xhr.responseXML);
