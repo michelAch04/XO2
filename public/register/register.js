@@ -95,15 +95,31 @@ submit.addEventListener("click", async function (event) {
     const errorMessage = error.message;
 
     if (errorMessage.includes('email-already-in-use')) {
+      //reset username message
+      const usernameMsg = document.getElementById('username-message');
+      usernameMsg.innerHTML = "";
+
       const emailMessage = document.getElementById('email-message');
       emailMessage.textContent = "This email is associated with another account!";
       window.location.href = "#login-form";
+
     } else if (errorMessage.includes("password-does-not-meet-requirements")) {
+      //reset username message
+      const usernameMsg = document.getElementById('username-message');
+      usernameMsg.innerHTML = "";
+
       const confirmMessage = document.getElementById('confirm-message');
       confirmMessage.textContent = "Password does not meet the requirements.";
       window.location.href = "#login-form";
+      
     } else {
       alert(`Error: ${errorMessage}`);
     }
   }
 });
+
+document.addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    submit.click();
+  }
+})

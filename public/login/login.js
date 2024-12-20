@@ -67,3 +67,9 @@ submit.addEventListener("click", async function (event) {
     message.textContent = "An error occurred. Please try again.";
   }
 });
+
+document.addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    submit.click();
+  }
+})

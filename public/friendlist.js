@@ -12,7 +12,8 @@ import {
     doc,
     setDoc,
     updateDoc,
-    getDoc
+    getDoc,
+    deleteDoc,
 } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
 
 const db = getFirestore();
@@ -27,6 +28,7 @@ const friendsTab = document.getElementById('friendsTab');
 const addFriendsTab = document.getElementById('addFriendsTab');
 const friendsList = document.getElementById('friendsList');
 const addFriends = document.getElementById('addFriends');
+const friendsRequestContainer = document.getElementById('friendsRequestContainer');
 const friendsListContainer = document.getElementById('friendsListContainer');
 const searchFriendInput = document.getElementById('searchFriend');
 const searchFriendBtn = document.getElementById('searchFriendBtn');
@@ -80,7 +82,7 @@ async function fetchFriendRequests() {
     const q = query(friendRequestsRef, where('receiverUid', '==', user.uid), where('status', '==', 'pending'));
     const querySnapshot = await getDocs(q);
 
-    friendsListContainer.innerHTML = ''; // Clear old requests
+    friendsRequestContainer.innerHTML = ''; // Clear old requests
 
     for (const doc of querySnapshot.docs) {
         const request = doc.data();
@@ -94,7 +96,7 @@ async function fetchFriendRequests() {
         <button class="declineRequest submit-form" data-uid="${request.senderUid}">Decline</button>
       `;
 
-        friendsListContainer.appendChild(div);
+        friendsRequestContainer.appendChild(div);
 
         // Attach event listeners
         div.querySelector('.acceptRequest').addEventListener('click', async () => {
@@ -154,6 +156,17 @@ searchFriendBtn.addEventListener('click', async () => {
             }
         `;
         searchResults.appendChild(div);
+        //to see if the request is pending or not
+        const sendRequestButton = div.querySelector('.sendRequest');
+        sendRequestButton?.addEventListener('click', async () => {
+            const uid = sendRequestButton.dataset.uid;
+            await sendFriendRequest(uid);
+    
+            // Update button to show "Pending"
+            sendRequestButton.textContent = 'Pending';
+            sendRequestButton.classList.add('submit-form');
+            sendRequestButton.setAttribute('disabled', true);
+        });
     });
 
     document.querySelectorAll('.sendRequest').forEach((btn) => {
@@ -195,6 +208,7 @@ async function handleFriendRequest(uid, accept) {
     }
 
     fetchFriendRequests();
+    fetchFriends();
 }
 
 // ------------------ Helper Functions ------------------
@@ -211,14 +225,15 @@ async function fetchFriends() {
     const friendsRef = collection(db, 'Users', user.uid, 'friendList');
     const querySnapshot = await getDocs(friendsRef);
 
-    friendsList.innerHTML = ''; // Clear the old friends list
+    friendsListContainer.innerHTML = ''; // Clear the old friends list
 
-    if (querySnapshot.empty) {
-        friendsList.innerHTML = '<p>No friends found.</p>';
+    if (querySnapshot.empty || querySnapshot.docs.length == 1) {
+        friendsListContainer.innerHTML = '<p>No friends found.</p>';
         return;
     }
 
     querySnapshot.forEach((doc) => {
+        if(doc.id != "_placeholder"){
         const friendData = doc.data();
         const div = document.createElement('div');
         div.classList.add('friend-item');
@@ -228,12 +243,13 @@ async function fetchFriends() {
             <button class="removeFriend submit-form" data-uid="${doc.id}">Remove Friend</button>
         `;
 
-        friendsList.appendChild(div);
+        friendsListContainer.appendChild(div);
 
         // Attach an event listener to the remove friend button
         div.querySelector('.removeFriend').addEventListener('click', async () => {
             await removeFriend(doc.id);
         });
+    }
     });
 }
 
@@ -246,8 +262,8 @@ async function removeFriend(friendUid) {
 
     // Remove the friend relationship
     await Promise.all([
-        userFriendRef.delete(),
-        friendUserRef.delete(),
+        deleteDoc(userFriendRef),
+        deleteDoc(friendUserRef),
     ]);
 
     fetchFriends(); // Refresh the friends list
