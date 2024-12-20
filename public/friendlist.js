@@ -268,3 +268,33 @@ async function removeFriend(friendUid) {
 
     fetchFriends(); // Refresh the friends list
 }
+
+// Listen for updates to friend requests
+function monitorFriendRequests() {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const friendRequestsRef = collection(db, 'friendRequests');
+    const q = query(friendRequestsRef, where('receiverUid', '==', user.uid));
+
+    onSnapshot(q, (snapshot) => {
+        snapshot.docChanges().forEach((change) => {
+            const data = change.doc.data();
+            const senderUid = data.senderUid;
+            const status = data.status;
+
+            if (status === 'declined') {
+                // Find the button for the senderUid and reset it
+                const button = document.querySelector(`.sendRequest[data-uid="${senderUid}"]`);
+                if (button) {
+                    button.textContent = 'Send Request';
+                    button.classList.remove('submit-form');
+                    button.removeAttribute('disabled');
+                }
+            }
+        });
+    });
+}
+
+// Call this function when the app initializes or after user logs in
+monitorFriendRequests();
